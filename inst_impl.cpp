@@ -70,8 +70,10 @@ void InstAND(uint16_t params){
 	}
 }
 
-void InstLDR(uint16_t){
-
+void InstLDR(uint16_t params){
+	uint16_t sr = (params>>6) & 0x0007;
+	uint16_t offset = params & 0x001f;
+	uint16_t dr = () & 0x0007
 }
 
 void InstSTR(uint16_t){

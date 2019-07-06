@@ -26,5 +26,19 @@ int main(int argc, char** argv){
 	}
 	ShutDown();
 */
+	Setup();
+	Registers regs;
+	Memory mem;
+	Instructions instructions;
+	while(running){
+		uint16_t inst = mem.GetNextInst(regs.IncPC());
+		uint16_t op = 0;
+		uint16_t params = 0;
+		instructions.Parse(inst, &op, &params);
+		if(!instructions.Execute(op, params)){
+			HandleBadOpCode();
+			running = false;
+		}
+	}
 	return 0;
 }
