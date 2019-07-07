@@ -1,21 +1,22 @@
 #include "sysprint.h"
-#include "system.h"
+#include "registers.h"
+#include "memory.h"
 
 #include <iostream>
 
 
-void PrintRegs(){
+void Print(const Registers& registers){
 	std::cout<<"Registers:\n";
-	for(int i=0; i<REG_COUNT; ++i){
-		std::cout<<System::reg[i]<<" ";
+	for(int i=0; i<registers.count; ++i){
+		std::cout<<registers.Content()[i]<<" ";
 	}
 	std::cout<<"\n";
 }
 
-void PrintMem(){
+void Print(const Memory& memory){
 	std::cout<<"Memory:\n";
-	for(int i=0; i<RAM_UNIT_COUNT; ++i){
-		std::cout<<System::memory[i]<<" ";
+	for(int i=0; i<memory.size; ++i){
+		std::cout<<memory.Content()[i]<<" ";
 	}
 	std::cout<<"\n";
 }
