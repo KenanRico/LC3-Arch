@@ -1,6 +1,7 @@
 #include "memory.h"
 
 #include <stdint.h>
+#include <iostream>
 
 
 
@@ -12,14 +13,13 @@ Memory::~Memory(){
 
 }
 
-uint16_t Memory::Read(uint16_t i) const{
-	return memory[i];
+uint16_t& Memory::operator[](int i){
+	return memory.at(i);
 }
 
-void Memory::Write(uint16_t i, uint16_t v){
-	memory[i] = v;
-}
-
-const std::array<uint16_t, Memory::size>& Memory::Content() const{
-	return memory;
+void Memory::PrintContent() const{
+	for(int i=0; i<size; ++i){
+		std::cout<<memory[i]<<" ";
+	}
+	std::cout<<"\n";
 }

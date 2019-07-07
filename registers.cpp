@@ -1,6 +1,7 @@
 #include "registers.h"
 
 #include <stdint.h>
+#include <iostream>
 
 
 
@@ -16,16 +17,8 @@ uint16_t Registers::GetIncPC(){
 	return reg[PC]++;
 }
 
-uint16_t Registers::Read(int i) const{
+uint16_t& Registers::operator[](int i){
 	return reg.at(i);
-}
-
-void Registers::Write(int i, uint16_t val){
-	reg.at(i) = val;
-}
-
-const std::array<uint16_t, Registers::count>& Registers::Content() const{
-	return reg;
 }
 
 void Registers::UpdateFlag(int i){
@@ -36,4 +29,11 @@ void Registers::UpdateFlag(int i){
 	}else{
 		reg[COND] = COND_POS; 
 	}
+}
+
+void Registers::PrintContent() const{
+	for(int i=0; i<count; ++i){
+		std::cout<<reg[i]<<" ";
+	}
+	std::cout<<"\n";
 }

@@ -18,9 +18,8 @@ class Memory{
 		Memory& operator=(const Memory&) = delete;
 
 	public:
-		uint16_t Read(uint16_t) const;
-		void Write(uint16_t, uint16_t);
-		const std::array<uint16_t, size>& Content() const;
+		uint16_t& operator[](int);
+		void PrintContent() const;
 };
 
 #endif

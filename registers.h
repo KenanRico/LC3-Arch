@@ -36,10 +36,9 @@ class Registers{
 
 	public:
 		uint16_t GetIncPC();
-		uint16_t Read(int) const;
-		void Write(int, uint16_t);
-		const std::array<uint16_t, count>& Content() const;
-		void UpdateFlag(int i);
+		uint16_t& operator[](int);
+		void UpdateFlag(int);
+		void PrintContent() const; 
 		
 };
 

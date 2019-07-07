@@ -1,7 +1,6 @@
 #include "memory.h"
 #include "registers.h"
 #include "instructions.h"
-#include "sysprint.h"
 
 
 
@@ -43,8 +42,8 @@ int main(int argc, char** argv){
 	Registers regs;
 	Memory mem;
 	Instructions instructions;
-	Print(regs);
-	instructions.Execute(Instructions::OP_ADD, 0x0065, &regs, &mem);
-	Print(regs);
+	regs.PrintContent();
+	instructions.Execute(Instructions::OP_ADD, 0x006c, &regs, &mem);
+	regs.PrintContent();
 	return 0;
 }
