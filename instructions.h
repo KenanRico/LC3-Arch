@@ -8,7 +8,6 @@
 #include <array>
 
 class Instructions;
-//typedef uint16_t (Instructions::*InstFuncPtr)(uint16_t, Registers*, Memory*);
 using InstFuncPtr = uint16_t(Instructions::*)(uint16_t, Registers*, Memory*) const;
 
 class Instructions{
