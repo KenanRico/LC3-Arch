@@ -43,7 +43,11 @@ int main(int argc, char** argv){
 	Memory mem;
 	Instructions instructions;
 	regs.PrintContent();
-	instructions.Execute(Instructions::OP_ADD, 0x006c, &regs, &mem);
+	instructions.Execute(Instructions::OP_ADD, 0x002c, &regs, &mem);
+	regs.PrintContent();
+	instructions.Execute(Instructions::OP_ADD, 0x0267, &regs, &mem);
+	regs.PrintContent();
+	instructions.Execute(Instructions::OP_AND, 0x0440, &regs, &mem);
 	regs.PrintContent();
 	return 0;
 }

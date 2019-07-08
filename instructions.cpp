@@ -73,7 +73,7 @@ uint16_t Instructions::ADD(uint16_t params, Registers* registers, Memory* memory
 	Registers& reg = *registers;
 	uint16_t dr = params>>9 & mask[3];
 	uint16_t sr1 = params>>6 & mask[3];
-	if(params>>6 & mask[1]){
+	if(params>>5 & mask[1]){
 		/*immediate mode*/
 		uint16_t imm5 = sign_extend(params & mask[5], 5);
 		reg[dr] = reg[sr1] + imm5;
@@ -87,10 +87,10 @@ uint16_t Instructions::ADD(uint16_t params, Registers* registers, Memory* memory
 }
 
 uint16_t Instructions::LD(uint16_t params, Registers* registers, Memory* memory) const{
-	uint16_t offset = params & mask[9];
-	uint16_t dr = (params>>9) & mask[3];
 	Registers& reg = *registers;
 	Memory& mem = *memory;
+	uint16_t offset = params & mask[9];
+	uint16_t dr = (params>>9) & mask[3];
 	reg[dr] = mem[reg[Registers::PC]+offset];
 }
 
@@ -113,27 +113,26 @@ uint16_t Instructions::JSR(uint16_t params, Registers* registers, Memory* memory
 	}
 }
 
-uint16_t Instructions::AND(uint16_t params, Registers*, Memory*) const{
-#ifdef INST_IMPL
+uint16_t Instructions::AND(uint16_t params, Registers* registers, Memory* memory) const{
+	Registers& reg = *registers;
 	uint16_t DR = params>>9;
-	uint16_t SR1 = params>>6 & 0x0007;
-	if(params & 0x0020){
+	uint16_t SR1 = params>>6 & mask[3];
+	if(params>>5 & mask[1]){
 		/*immediate mode*/
-		uint16_t imm5 = sign_extend(params & 0x001f, 5);
-		System::reg[DR] = System::reg[SR1] & imm5;
+		uint16_t imm5 = sign_extend(params & mask[5], 5);
+		reg[DR] = reg[SR1] & imm5;
 	}else{
 		/*reg mode*/
-		uint16_t SR2 = params & 0x0007;
-		System::reg[DR] = System::reg[SR1] & System::reg[SR2];
+		uint16_t SR2 = params & mask[3];
+		reg[DR] = reg[SR1] & reg[SR2];
 	}
-#endif
 }
 
 uint16_t Instructions::LDR(uint16_t params, Registers*, Memory*) const{
 #ifdef INST_IMPL
-	uint16_t sr = (params>>6) & 0x0007;
-	uint16_t offset = params & 0x001f;
-	uint16_t dr = () & 0x0007
+	uint16_t sr = (params>>6) & mask[3];
+	uint16_t offset = params & mask[5];
+	uint16_t dr = () & mask[3]
 #endif
 }
 
@@ -149,23 +148,22 @@ uint16_t Instructions::NOT(uint16_t, Registers*, Memory*) const{
 
 }
 
-uint16_t Instructions::LDI(uint16_t, Registers*, Memory*) const{
-#ifdef INST_IMPL
-	uint16_t offset = params & 0x01ff;
-	uint16_t dr = (params>>9) & 0x0007;
-	System::reg[dr] = System::memory[System::memory[System::reg[REG_PC]+offset]];
-#endif
+uint16_t Instructions::LDI(uint16_t params, Registers* registers, Memory* memory) const{
+	Registers& reg = *registers;
+	Memory& mem = *memory;
+	uint16_t offset = params & mask[9];
+	uint16_t dr = (params>>9) & mask[3];
+	reg[dr] = mem[mem[reg[Registers::PC]+offset]];
 }
 
 uint16_t Instructions::STI(uint16_t, Registers*, Memory*) const{
 
 }
 
-uint16_t Instructions::JMP(uint16_t params, Registers*, Memory*) const{
-#ifdef INST_IMPL
-	uint16_t base_reg = params>>6 & 0x0007;
-	System::reg[System::REG_PC] = System::reg[base_reg];
-#endif
+uint16_t Instructions::JMP(uint16_t params, Registers* registers, Memory*) const{
+	Registers& reg = *registers;
+	uint16_t base_reg = params>>6 & mask[3];
+	reg[Registers::PC] = reg[base_reg];
 }
 
 uint16_t Instructions::RES(uint16_t, Registers*, Memory*) const{
