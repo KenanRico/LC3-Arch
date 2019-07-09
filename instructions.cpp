@@ -94,8 +94,12 @@ uint16_t Instructions::LD(uint16_t params, Registers* registers, Memory* memory)
 	reg[dr] = mem[reg[Registers::PC]+offset];
 }
 
-uint16_t Instructions::ST(uint16_t, Registers*, Memory*) const{
-
+uint16_t Instructions::ST(uint16_t params, Registers* registers, Memory* memory) const{
+	Registers& reg = *registers;
+	Memory& mem = *memory;
+	uint16_t sr = params>>9 & mask[3];
+	uint16_t offset = params & mask[9];
+	mem[Registers::PC+sign_extend(offset, 9)] = reg[sr];
 }
 
 uint16_t Instructions::JSR(uint16_t params, Registers* registers, Memory* memory) const{
@@ -128,12 +132,13 @@ uint16_t Instructions::AND(uint16_t params, Registers* registers, Memory* memory
 	}
 }
 
-uint16_t Instructions::LDR(uint16_t params, Registers*, Memory*) const{
-#ifdef INST_IMPL
+uint16_t Instructions::LDR(uint16_t params, Registers* registers, Memory* memory) const{
+	Registers& reg = *registers;
+	Memory& mem = *memory;
 	uint16_t sr = (params>>6) & mask[3];
 	uint16_t offset = params & mask[5];
-	uint16_t dr = () & mask[3]
-#endif
+	uint16_t dr = (params>>9) & mask[3];
+	reg[dr] = mem[reg[sr]+sign_extend(offset,5)];
 }
 
 uint16_t Instructions::STR(uint16_t, Registers*, Memory*) const{
@@ -144,8 +149,11 @@ uint16_t Instructions::RTI(uint16_t, Registers*, Memory*) const{
 
 }
 
-uint16_t Instructions::NOT(uint16_t, Registers*, Memory*) const{
-
+uint16_t Instructions::NOT(uint16_t params, Registers* registers, Memory*) const{
+	Registers& reg = *registers;
+	uint16_t sr = params>>6 & mask[3];
+	uint16_t dr = params>>9 & mask[3];
+	reg[dr] = ~reg[sr];
 }
 
 uint16_t Instructions::LDI(uint16_t params, Registers* registers, Memory* memory) const{
@@ -170,8 +178,11 @@ uint16_t Instructions::RES(uint16_t, Registers*, Memory*) const{
 
 }
 
-uint16_t Instructions::LEA(uint16_t, Registers*, Memory*) const{
-
+uint16_t Instructions::LEA(uint16_t params, Registers* registers, Memory*) const{
+	Registers& reg = *registers;
+	uint16_t offset = params & mask[9];
+	uint16_t dr = params>>9 & mask[3];
+	reg[dr] = reg[Registers::PC] + sign_extend(offset, 9);
 }
 
 uint16_t Instructions::TRAP(uint16_t, Registers*, Memory*) const{
