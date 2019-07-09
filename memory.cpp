@@ -13,7 +13,7 @@ Memory::~Memory(){
 
 }
 
-uint16_t& Memory::operator[](int i){
+inline uint16_t& Memory::operator[](int i){
 	return memory.at(i);
 }
 

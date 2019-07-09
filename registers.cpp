@@ -13,11 +13,11 @@ Registers::~Registers(){
 
 }
 
-uint16_t Registers::GetIncPC(){
+inline uint16_t Registers::GetIncPC(){
 	return reg[PC]++;
 }
 
-uint16_t& Registers::operator[](int i){
+inline uint16_t& Registers::operator[](int i){
 	return reg.at(i);
 }
 
