@@ -3,6 +3,7 @@
 
 #include "registers.h"
 #include "memory.h"
+#include "traproutines.h"
 
 #include <stdint.h>
 #include <array>

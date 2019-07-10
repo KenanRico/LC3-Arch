@@ -1,8 +1,14 @@
 #ifndef TRAP_ROUTINES_H
 #define TRAP_ROUTINES_H
 
+#include "registers.h"
+#include "memory.h"
+#include <stdint.h>
+#include <array>
+
+
 class TrapRoutines;
-using TrapFuncPtr = void(TrapRouties::*)(uint16_t, Registers*, Memory*);
+using TrapFuncPtr = void(TrapRoutines::*)(uint16_t, Memory*) const;
 
 class TrapRoutines{
 	public:
@@ -14,9 +20,9 @@ class TrapRoutines{
 			IN = 0x23,
 			PUTSP = 0x24,
 			HALT = 0x25
-		}
+		};
 	private:
-		std::array<TrapFuncPtr, count> routines;
+		std::array<TrapFuncPtr, count> routine;
 
 	public:
 		TrapRoutines();
@@ -26,14 +32,14 @@ class TrapRoutines{
 		TrapRoutines& operator=(const TrapRoutines&) = delete;
 
 	public:
-		void ExecuteTrapRoutine(uint16_t, Registers*, Memory*);
+		void ExecuteTrapRoutine(uint16_t, Registers*, Memory*) const;
 	private:
-		void Trap_GETC(uint16_t, Registers*, Memory*);
-		void Trap_OUT(uint16_t, Registers*, Memory*);
-		void Trap_PUTS(uint16_t, Registers*, Memory*);
-		void Trap_IN(uint16_t, Registers*, Memory*);
-		void Trap_PUTSP(uint16_t, Registers*, Memory*);
-		void Trap_HALT(uint16_t, Registers*, Memory*);
+		void Trap_GETC(uint16_t, Memory*) const;
+		void Trap_OUT(uint16_t, Memory*) const;
+		void Trap_PUTS(uint16_t, Memory*) const;
+		void Trap_IN(uint16_t, Memory*) const;
+		void Trap_PUTSP(uint16_t, Memory*) const;
+		void Trap_HALT(uint16_t, Memory*) const;
 };
 
 #endif
