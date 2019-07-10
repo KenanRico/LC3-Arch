@@ -198,8 +198,9 @@ void Instructions::LEA(uint16_t params, Registers* registers, Memory*) const{
 	reg[dr] = reg[Registers::PC] + offset;
 }
 
-void Instructions::TRAP(uint16_t, Registers*, Memory*) const{
-
+void Instructions::TRAP(uint16_t params, Registers* registers, Memory* memory) const{
+	uint16_t trap_code = params & mask[8];
+	trap_routines.ExecuteTrapRoutine(trap_code, registers, memory);
 }
 
 

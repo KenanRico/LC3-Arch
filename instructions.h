@@ -34,6 +34,7 @@ class Instructions{
 	private:
 		std::array<InstFuncPtr, count> inst;
 		std::array<uint16_t, count+1> mask;
+		TrapRoutines trap_routines;
 
 	public:
 		Instructions();
