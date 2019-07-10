@@ -8,7 +8,7 @@
 #include <array>
 
 class Instructions;
-using InstFuncPtr = uint16_t(Instructions::*)(uint16_t, Registers*, Memory*) const;
+using InstFuncPtr = void(Instructions::*)(uint16_t, Registers*, Memory*) const;
 
 class Instructions{
 	public:
@@ -46,22 +46,22 @@ class Instructions{
 		void Parse(uint16_t, uint16_t*, uint16_t*) const;
 		bool Execute(uint16_t, uint16_t, Registers*, Memory*) const;
 	private:
-		uint16_t BR(uint16_t, Registers*, Memory*) const;
-		uint16_t ADD(uint16_t, Registers*, Memory*) const;
-		uint16_t LD(uint16_t, Registers*, Memory*) const;
-		uint16_t ST(uint16_t, Registers*, Memory*) const;
-		uint16_t JSR(uint16_t, Registers*, Memory*) const;
-		uint16_t AND(uint16_t, Registers*, Memory*) const;
-		uint16_t LDR(uint16_t, Registers*, Memory*) const;
-		uint16_t STR(uint16_t, Registers*, Memory*) const;
-		uint16_t RTI(uint16_t, Registers*, Memory*) const;
-		uint16_t NOT(uint16_t, Registers*, Memory*) const;
-		uint16_t LDI(uint16_t, Registers*, Memory*) const;
-		uint16_t STI(uint16_t, Registers*, Memory*) const;
-		uint16_t JMP(uint16_t, Registers*, Memory*) const;
-		uint16_t RES(uint16_t, Registers*, Memory*) const;
-		uint16_t LEA(uint16_t, Registers*, Memory*) const;
-		uint16_t TRAP(uint16_t, Registers*, Memory*) const;
+		void BR(uint16_t, Registers*, Memory*) const;
+		void ADD(uint16_t, Registers*, Memory*) const;
+		void LD(uint16_t, Registers*, Memory*) const;
+		void ST(uint16_t, Registers*, Memory*) const;
+		void JSR(uint16_t, Registers*, Memory*) const;
+		void AND(uint16_t, Registers*, Memory*) const;
+		void LDR(uint16_t, Registers*, Memory*) const;
+		void STR(uint16_t, Registers*, Memory*) const;
+		void RTI(uint16_t, Registers*, Memory*) const;
+		void NOT(uint16_t, Registers*, Memory*) const;
+		void LDI(uint16_t, Registers*, Memory*) const;
+		void STI(uint16_t, Registers*, Memory*) const;
+		void JMP(uint16_t, Registers*, Memory*) const;
+		void RES(uint16_t, Registers*, Memory*) const;
+		void LEA(uint16_t, Registers*, Memory*) const;
+		void TRAP(uint16_t, Registers*, Memory*) const;
 };
 
 #endif

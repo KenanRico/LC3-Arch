@@ -35,8 +35,8 @@ class Registers{
 		Registers& operator=(const Registers&) = delete;
 
 	public:
-		uint16_t GetIncPC();
-		uint16_t& operator[](int);
+		inline uint16_t GetIncPC(){ return reg[PC]++; }
+		inline uint16_t& operator[](int i){ return reg.at(i); }
 		void UpdateFlag(int);
 		void PrintContent() const; 
 		

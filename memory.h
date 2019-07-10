@@ -18,7 +18,7 @@ class Memory{
 		Memory& operator=(const Memory&) = delete;
 
 	public:
-		uint16_t& operator[](int);
+		inline uint16_t& operator[](int i){ return memory.at(i); }
 		void PrintContent() const;
 };
 

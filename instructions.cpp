@@ -43,7 +43,7 @@ void Instructions::Parse(uint16_t instruction, uint16_t* op, uint16_t* params) c
 
 bool Instructions::Execute(uint16_t op, uint16_t params, Registers* reg, Memory* mem) const{
 	bool result = true;
-	if(op<count){
+	if(op<count && op!=OP_RTI && op!=OP_RES){
 		(this->*inst[op])(params, reg, mem);
 	}else{
 		result = false;
@@ -65,11 +65,16 @@ uint16_t sign_extend(uint16_t val, int bit_count){
 }
 
 
-uint16_t Instructions::BR(uint16_t, Registers*, Memory*) const{
-
+void Instructions::BR(uint16_t params, Registers* registers, Memory* memory) const{
+	Registers& reg = *registers;
+	uint16_t cond_flag = params>>9 & mask[3];
+	uint16_t offset = sign_extend(params & mask[9], 9);
+	if(cond_flag & reg[Registers::COND]){
+		reg[Registers::PC] += offset;
+	}
 }
 
-uint16_t Instructions::ADD(uint16_t params, Registers* registers, Memory* memory) const{
+void Instructions::ADD(uint16_t params, Registers* registers, Memory* memory) const{
 	Registers& reg = *registers;
 	uint16_t dr = params>>9 & mask[3];
 	uint16_t sr1 = params>>6 & mask[3];
@@ -82,11 +87,10 @@ uint16_t Instructions::ADD(uint16_t params, Registers* registers, Memory* memory
 		uint16_t sr2 = params & mask[3];
 		reg[dr] = reg[sr1] + reg[sr2];
 	}
-	return 0;
 	//UpdateFlag(dr);
 }
 
-uint16_t Instructions::LD(uint16_t params, Registers* registers, Memory* memory) const{
+void Instructions::LD(uint16_t params, Registers* registers, Memory* memory) const{
 	Registers& reg = *registers;
 	Memory& mem = *memory;
 	uint16_t offset = params & mask[9];
@@ -94,7 +98,7 @@ uint16_t Instructions::LD(uint16_t params, Registers* registers, Memory* memory)
 	reg[dr] = mem[reg[Registers::PC]+offset];
 }
 
-uint16_t Instructions::ST(uint16_t params, Registers* registers, Memory* memory) const{
+void Instructions::ST(uint16_t params, Registers* registers, Memory* memory) const{
 	Registers& reg = *registers;
 	Memory& mem = *memory;
 	uint16_t sr = params>>9 & mask[3];
@@ -102,7 +106,7 @@ uint16_t Instructions::ST(uint16_t params, Registers* registers, Memory* memory)
 	mem[Registers::PC+offset] = reg[sr];
 }
 
-uint16_t Instructions::JSR(uint16_t params, Registers* registers, Memory* memory) const{
+void Instructions::JSR(uint16_t params, Registers* registers, Memory* memory) const{
 	Registers& reg = *registers;
 	Memory& mem = *memory;
 	if(params>>11 & mask[1]){
@@ -117,7 +121,7 @@ uint16_t Instructions::JSR(uint16_t params, Registers* registers, Memory* memory
 	}
 }
 
-uint16_t Instructions::AND(uint16_t params, Registers* registers, Memory* memory) const{
+void Instructions::AND(uint16_t params, Registers* registers, Memory* memory) const{
 	Registers& reg = *registers;
 	uint16_t DR = params>>9;
 	uint16_t SR1 = params>>6 & mask[3];
@@ -132,7 +136,7 @@ uint16_t Instructions::AND(uint16_t params, Registers* registers, Memory* memory
 	}
 }
 
-uint16_t Instructions::LDR(uint16_t params, Registers* registers, Memory* memory) const{
+void Instructions::LDR(uint16_t params, Registers* registers, Memory* memory) const{
 	Registers& reg = *registers;
 	Memory& mem = *memory;
 	uint16_t sr = (params>>6) & mask[3];
@@ -141,7 +145,7 @@ uint16_t Instructions::LDR(uint16_t params, Registers* registers, Memory* memory
 	reg[dr] = mem[reg[sr]+offset,5];
 }
 
-uint16_t Instructions::STR(uint16_t, Registers* registers, Memory* memory) const{
+void Instructions::STR(uint16_t params, Registers* registers, Memory* memory) const{
 	Registers& reg = *registers;
 	Memory& mem = *memory;
 	uint16_t sr = (params>>9) & mask[3];
@@ -150,18 +154,18 @@ uint16_t Instructions::STR(uint16_t, Registers* registers, Memory* memory) const
 	mem[reg[br]+offset] = reg[sr];
 }
 
-uint16_t Instructions::RTI(uint16_t, Registers*, Memory*) const{
+void Instructions::RTI(uint16_t, Registers*, Memory*) const{
 	//Not used
 }
 
-uint16_t Instructions::NOT(uint16_t params, Registers* registers, Memory*) const{
+void Instructions::NOT(uint16_t params, Registers* registers, Memory*) const{
 	Registers& reg = *registers;
 	uint16_t sr = params>>6 & mask[3];
 	uint16_t dr = params>>9 & mask[3];
 	reg[dr] = ~reg[sr];
 }
 
-uint16_t Instructions::LDI(uint16_t params, Registers* registers, Memory* memory) const{
+void Instructions::LDI(uint16_t params, Registers* registers, Memory* memory) const{
 	Registers& reg = *registers;
 	Memory& mem = *memory;
 	uint16_t offset = params & mask[9];
@@ -169,32 +173,32 @@ uint16_t Instructions::LDI(uint16_t params, Registers* registers, Memory* memory
 	reg[dr] = mem[mem[reg[Registers::PC]+offset]];
 }
 
-uint16_t Instructions::STI(uint16_t params, Registers* registers, Memory* memory) const{
+void Instructions::STI(uint16_t params, Registers* registers, Memory* memory) const{
 	Registers& reg = *registers;
 	Memory& mem = *memory;
 	uint16_t sr = params>>9 & mask[3];
-	uint16_t offset = sign_extend(parmas & mask[9], 9);
+	uint16_t offset = sign_extend(params & mask[9], 9);
 	mem[mem[reg[Registers::PC]+offset]] = reg[sr];
 }
 
-uint16_t Instructions::JMP(uint16_t params, Registers* registers, Memory*) const{
+void Instructions::JMP(uint16_t params, Registers* registers, Memory*) const{
 	Registers& reg = *registers;
 	uint16_t base_reg = params>>6 & mask[3];
 	reg[Registers::PC] = reg[base_reg];
 }
 
-uint16_t Instructions::RES(uint16_t, Registers*, Memory*) const{
+void Instructions::RES(uint16_t, Registers*, Memory*) const{
 	//Not used
 }
 
-uint16_t Instructions::LEA(uint16_t params, Registers* registers, Memory*) const{
+void Instructions::LEA(uint16_t params, Registers* registers, Memory*) const{
 	Registers& reg = *registers;
 	uint16_t offset = sign_extend(params&mask[9], 9);
 	uint16_t dr = params>>9 & mask[3];
 	reg[dr] = reg[Registers::PC] + offset;
 }
 
-uint16_t Instructions::TRAP(uint16_t, Registers*, Memory*) const{
+void Instructions::TRAP(uint16_t, Registers*, Memory*) const{
 
 }
 

@@ -13,14 +13,6 @@ Registers::~Registers(){
 
 }
 
-inline uint16_t Registers::GetIncPC(){
-	return reg[PC]++;
-}
-
-inline uint16_t& Registers::operator[](int i){
-	return reg.at(i);
-}
-
 void Registers::UpdateFlag(int i){
 	if(reg[i]==0){
 		reg[COND] = COND_ZRO; 
