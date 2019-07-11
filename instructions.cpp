@@ -5,8 +5,10 @@
 
 #include <stdint.h>
 
+#define OK 0
+#define BAD_OP_CODE 1
+#define BAD_TRAP_CODE 2
 
-#include <iostream>
 Instructions::Instructions():
 inst(
 	{
@@ -42,12 +44,13 @@ void Instructions::Parse(uint16_t instruction, uint16_t* op, uint16_t* params) c
 	*params = instruction & mask[12];
 }
 
-bool Instructions::Execute(uint16_t op, uint16_t params, Registers* reg, Memory* mem) const{
+bool Instructions::Execute(uint16_t op, uint16_t params, Registers* reg, Memory* mem){
 	bool result = true;
 	if(op<count && op!=OP_RTI && op!=OP_RES){
 		(this->*inst[op])(params, reg, mem);
 	}else{
 		result = false;
+		status = BAD_OP_CODE;
 	}
 	return result;
 }
@@ -199,9 +202,13 @@ void Instructions::LEA(uint16_t params, Registers* registers, Memory*) const{
 	reg[dr] = reg[Registers::PC] + offset;
 }
 
-void Instructions::TRAP(uint16_t params, Registers* registers, Memory* memory) const{
+void Instructions::TRAP(uint16_t params, Registers* registers, Memory* memory){
 	uint16_t trap_code = params & mask[8];
-	trap_routines.ExecuteTrapRoutine(trap_code, registers, memory);
+	if(TrapRoutines::GETC<=trap_code && trap_code <=TrapRoutines::HALT){
+		trap_routines.ExecuteTrapRoutine(trap_code, registers, memory);
+	}else{
+		status = BAD_TRAP_CODE;
+	}
 }
 
 

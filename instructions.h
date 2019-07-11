@@ -36,6 +36,7 @@ class Instructions{
 		std::array<InstFuncPtr, count> inst;
 		std::array<uint16_t, count+1> mask;
 		TrapRoutines trap_routines;
+		int status;
 
 	public:
 		Instructions();
@@ -46,7 +47,8 @@ class Instructions{
 
 	public:
 		void Parse(uint16_t, uint16_t*, uint16_t*) const;
-		bool Execute(uint16_t, uint16_t, Registers*, Memory*) const;
+		bool Execute(uint16_t, uint16_t, Registers*, Memory*);
+		inline int Status() const { return status; }
 	private:
 		void BR(uint16_t, Registers*, Memory*) const;
 		void ADD(uint16_t, Registers*, Memory*) const;
@@ -63,7 +65,7 @@ class Instructions{
 		void JMP(uint16_t, Registers*, Memory*) const;
 		void RES(uint16_t, Registers*, Memory*) const;
 		void LEA(uint16_t, Registers*, Memory*) const;
-		void TRAP(uint16_t, Registers*, Memory*) const;
+		void TRAP(uint16_t, Registers*, Memory*);
 };
 
 #endif
