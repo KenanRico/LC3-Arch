@@ -31,25 +31,28 @@ void TrapRoutines::ExecuteTrapRoutine(uint16_t trap_code, Registers* registers, 
 /*---------------------------------------------------Trap routine implementations----------------------------------------------------------*/
 
 
-void TrapRoutines::Trap_GETC(uint16_t R0, Memory*) const{
+void TrapRoutines::Trap_GETC(uint16_t* R0, Memory*) const{
+	char c = '';
+	std::cin>>c;
+	*R0 = (uint16_t)c;
+}
+
+void TrapRoutines::Trap_OUT(uint16_t* R0, Memory*) const{
 
 }
 
-void TrapRoutines::Trap_OUT(uint16_t R0, Memory*) const{
+void TrapRoutines::Trap_PUTS(uint16_t* R0, Memory*) const{
 
 }
 
-void TrapRoutines::Trap_PUTS(uint16_t R0, Memory*) const{
+void TrapRoutines::Trap_IN(uint16_t* R0, Memory*) const{
 
 }
 
-void TrapRoutines::Trap_IN(uint16_t R0, Memory*) const{
+void TrapRoutines::Trap_PUTSP(uint16_t* R0, Memory*) const{
 
 }
 
-void TrapRoutines::Trap_PUTSP(uint16_t R0, Memory*) const{
-
-}
-void TrapRoutines::Trap_HALT(uint16_t, Memory*) const{
+void TrapRoutines::Trap_HALT(uint16_t*, Memory*) const{
 
 }
