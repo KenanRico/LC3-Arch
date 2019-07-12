@@ -8,6 +8,8 @@
 #define OK 0
 #define BAD_OP_CODE 1
 #define BAD_TRAP_CODE 2
+#define TRAP_HALT 3
+#define TRAP_FAULT 4
 
 Instructions::Instructions(): status(OK){
 	inst[OP_BR] = &Instructions::BR;
@@ -200,10 +202,13 @@ void Instructions::LEA(uint16_t params, Registers* registers, Memory*){
 
 void Instructions::TRAP(uint16_t params, Registers* registers, Memory* memory){
 	uint16_t trap_code = params & mask[8];
-	if(TrapRoutines::GETC<=trap_code && trap_code <=TrapRoutines::HALT){
-		trap_routines.ExecuteTrapRoutine(trap_code, registers, memory);
+	trap_routines.ExecuteTrapRoutine(trap_code, registers, memory);
+	if(trap_routines.Status()==0){
+		//OK
+	}else if(trap_routines.Status()==1){
+		status = TRAP_HALT;
 	}else{
-		status = BAD_TRAP_CODE;
+		status = TRAP_FAULT;
 	}
 }
 

@@ -1,0 +1,11 @@
+Instruction Impl:
+	- BR:
+	- ADD: OK
+	- AND: OK
+	-
+Trap routine Impl:
+	- GETC:
+	- PUTS:
+	-
+Other functions:
+	- LoadImage():

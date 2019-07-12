@@ -2,6 +2,8 @@
 #include "registers.h"
 #include "instructions.h"
 
+#include <iostream>
+
 
 
 int main(int argc, char** argv){
@@ -39,9 +41,7 @@ int main(int argc, char** argv){
 		}
 	}
 */
-	Registers regs;
-	Memory mem;
-	Instructions instructions;
+	/*
 	regs.PrintContent();
 	instructions.Execute(Instructions::OP_ADD, 0x002c, &regs, &mem);
 	regs.PrintContent();
@@ -49,5 +49,14 @@ int main(int argc, char** argv){
 	regs.PrintContent();
 	instructions.Execute(Instructions::OP_AND, 0x0440, &regs, &mem);
 	regs.PrintContent();
+	*/
+	Registers regs;
+	Memory mem;
+	Instructions instructions;
+	mem.LoadImage("someexecutable");
+	while((mem.Status()|instructions.Status())==0x0){
+
+	}
+	std::cout<<"mem status="<<mem.Status()<<"; inst status="<<instructions.Status()<<"\n";
 	return 0;
 }
