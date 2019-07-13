@@ -50,6 +50,8 @@ int main(int argc, char** argv){
 	instructions.Execute(Instructions::OP_AND, 0x0440, &regs, &mem);
 	regs.PrintContent();
 	*/
+	Platform platform;
+	platform.DisableInputBuffering();
 	Registers regs;
 	Memory mem;
 	Instructions instructions;

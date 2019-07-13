@@ -6,6 +6,9 @@
 #include <cstring>
 #include <stdio.h>
 
+#include <sys/time.h>
+#include <sys/select.h>
+
 
 #define OK 0
 #define BAD_FILE_PATH 1
@@ -26,7 +29,6 @@ uint16_t Swap16(uint16_t val){
 	return (val<<8) | (val>>8);
 }
 
-#include <iostream>
 void Memory::LoadImage(const std::string& image_path){
 	/*Read image*/
 	FILE* file = fopen(image_path.c_str(), "rb");
@@ -47,6 +49,31 @@ void Memory::LoadImage(const std::string& image_path){
 		*p = Swap16(*p);
 		++p;
 	}
+}
+
+/*
+ * key checking helper func
+ */
+int CheckKey(){
+	fd_set readfds;
+	FD_ZERO(&readfds);
+	FD_SET(STDIN_FILENO, &readfds);
+	struct timeval timeout;
+	timeout.tv_sec = 0;
+	timeout.tv_usec = 0;
+	return select(1, &readfds, NULL, NULL, &timeout) != 0;
+}
+
+uint16_t& Memory::operator[](int addr){
+	if(addr==KBSR){
+		if(CheckKey()!=0){
+			memory[KBSR] = 1<<15;
+			memory[KBDR] = getchar();
+		}else{
+			memory[KBSR] = 0;
+		}
+	}
+	return memory.at(i);
 }
 
 void Memory::PrintContent() const{

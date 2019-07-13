@@ -8,6 +8,10 @@
 class Memory{
 	public:
 		static constexpr int size = 65536;
+		enum MemMappedReg{
+			KBSR = 0xfe00,
+			KBDR = 0xfe02
+		};
 	private:
 		std::array<uint16_t, size> memory;
 		int status;
@@ -21,7 +25,7 @@ class Memory{
 
 	public:
 		void LoadImage(const std::string&);
-		inline uint16_t& operator[](int i){ return memory.at(i); }
+		uint16_t& operator[](int);
 		void PrintContent() const;
 		inline int Status() const { return status; }
 };

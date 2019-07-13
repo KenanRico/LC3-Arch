@@ -8,4 +8,5 @@ Trap routine Impl:
 	- PUTS:
 	-
 Other functions:
-	- LoadImage():
+	- Memory::LoadImage():
+	- Memory::operator[]():
