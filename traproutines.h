@@ -8,7 +8,7 @@
 
 
 class TrapRoutines;
-using TrapFuncPtr = void(TrapRoutines::*)(uint16_t*, Memory*);
+using TrapFuncPtr = int(TrapRoutines::*)(uint16_t*, Memory*);
 
 class TrapRoutines{
 	public:
@@ -33,15 +33,15 @@ class TrapRoutines{
 		TrapRoutines& operator=(const TrapRoutines&) = delete;
 
 	public:
-		void ExecuteTrapRoutine(uint16_t, Registers*, Memory*);
+		int ExecuteTrapRoutine(uint16_t, Registers*, Memory*);
 		inline int Status() const { return status; }
 	private:
-		void Trap_GETC(uint16_t*, Memory*);
-		void Trap_OUT(uint16_t*, Memory*);
-		void Trap_PUTS(uint16_t*, Memory*);
-		void Trap_IN(uint16_t*, Memory*);
-		void Trap_PUTSP(uint16_t*, Memory*);
-		void Trap_HALT(uint16_t*, Memory*);
+		int Trap_GETC(uint16_t*, Memory*);
+		int Trap_OUT(uint16_t*, Memory*);
+		int Trap_PUTS(uint16_t*, Memory*);
+		int Trap_IN(uint16_t*, Memory*);
+		int Trap_PUTSP(uint16_t*, Memory*);
+		int Trap_HALT(uint16_t*, Memory*);
 };
 
 #endif

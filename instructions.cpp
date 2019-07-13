@@ -45,7 +45,10 @@ void Instructions::Parse(uint16_t instruction, uint16_t* op, uint16_t* params) c
 bool Instructions::Execute(uint16_t op, uint16_t params, Registers* reg, Memory* mem){
 	bool result = true;
 	if(op<count && op!=OP_RTI && op!=OP_RES){
-		(this->*inst[op])(params, reg, mem);
+		int update_reg = (this->*inst[op])(params, reg, mem);
+		if(update_reg>=0){
+			reg->UpdateFlag(update_reg);
+		}
 	}else{
 		result = false;
 		status = BAD_OP_CODE;
@@ -67,16 +70,17 @@ uint16_t sign_extend(uint16_t val, int bit_count){
 }
 
 
-void Instructions::BR(uint16_t params, Registers* registers, Memory* memory){
+int Instructions::BR(uint16_t params, Registers* registers, Memory* memory){
 	Registers& reg = *registers;
 	uint16_t cond_flag = params>>9 & mask[3];
 	uint16_t offset = sign_extend(params & mask[9], 9);
 	if(cond_flag & reg[Registers::COND]){
 		reg[Registers::PC] += offset;
 	}
+	return -1;
 }
 
-void Instructions::ADD(uint16_t params, Registers* registers, Memory* memory){
+int Instructions::ADD(uint16_t params, Registers* registers, Memory* memory){
 	Registers& reg = *registers;
 	uint16_t dr = params>>9 & mask[3];
 	uint16_t sr1 = params>>6 & mask[3];
@@ -89,26 +93,28 @@ void Instructions::ADD(uint16_t params, Registers* registers, Memory* memory){
 		uint16_t sr2 = params & mask[3];
 		reg[dr] = reg[sr1] + reg[sr2];
 	}
-	//UpdateFlag(dr);
+	return dr;
 }
 
-void Instructions::LD(uint16_t params, Registers* registers, Memory* memory){
+int Instructions::LD(uint16_t params, Registers* registers, Memory* memory){
 	Registers& reg = *registers;
 	Memory& mem = *memory;
 	uint16_t offset = params & mask[9];
 	uint16_t dr = (params>>9) & mask[3];
 	reg[dr] = mem[reg[Registers::PC]+offset];
+	return dr;
 }
 
-void Instructions::ST(uint16_t params, Registers* registers, Memory* memory){
+int Instructions::ST(uint16_t params, Registers* registers, Memory* memory){
 	Registers& reg = *registers;
 	Memory& mem = *memory;
 	uint16_t sr = params>>9 & mask[3];
 	uint16_t offset = sign_extend(params&mask[9], 9);
 	mem[Registers::PC+offset] = reg[sr];
+	return -1;
 }
 
-void Instructions::JSR(uint16_t params, Registers* registers, Memory* memory){
+int Instructions::JSR(uint16_t params, Registers* registers, Memory* memory){
 	Registers& reg = *registers;
 	Memory& mem = *memory;
 	if(params>>11 & mask[1]){
@@ -121,88 +127,98 @@ void Instructions::JSR(uint16_t params, Registers* registers, Memory* memory){
 		uint16_t base_reg = params>>6 & mask[3];
 		reg[Registers::PC] = reg[base_reg];
 	}
+	return -1;
 }
 
-void Instructions::AND(uint16_t params, Registers* registers, Memory* memory){
+int Instructions::AND(uint16_t params, Registers* registers, Memory* memory){
 	Registers& reg = *registers;
-	uint16_t DR = params>>9;
-	uint16_t SR1 = params>>6 & mask[3];
+	uint16_t dr = params>>9;
+	uint16_t sr1 = params>>6 & mask[3];
 	if(params>>5 & mask[1]){
 		/*immediate mode*/
 		uint16_t imm5 = sign_extend(params & mask[5], 5);
-		reg[DR] = reg[SR1] & imm5;
+		reg[dr] = reg[sr1] & imm5;
 	}else{
 		/*reg mode*/
-		uint16_t SR2 = params & mask[3];
-		reg[DR] = reg[SR1] & reg[SR2];
+		uint16_t sr2 = params & mask[3];
+		reg[dr] = reg[sr1] & reg[sr2];
 	}
+	return dr;
 }
 
-void Instructions::LDR(uint16_t params, Registers* registers, Memory* memory){
+int Instructions::LDR(uint16_t params, Registers* registers, Memory* memory){
 	Registers& reg = *registers;
 	Memory& mem = *memory;
 	uint16_t sr = (params>>6) & mask[3];
 	uint16_t offset = sign_extend(params&mask[5], 5);
 	uint16_t dr = (params>>9) & mask[3];
 	reg[dr] = mem[reg[sr]+offset,5];
+	return dr;
 }
 
-void Instructions::STR(uint16_t params, Registers* registers, Memory* memory){
+int Instructions::STR(uint16_t params, Registers* registers, Memory* memory){
 	Registers& reg = *registers;
 	Memory& mem = *memory;
 	uint16_t sr = (params>>9) & mask[3];
 	uint16_t br = (params>>6) & mask[3];
 	uint16_t offset = sign_extend(params & mask[6], 6);
 	mem[reg[br]+offset] = reg[sr];
+	return -1;
 }
 
-void Instructions::RTI(uint16_t, Registers*, Memory*){
+int Instructions::RTI(uint16_t, Registers*, Memory*){
 	//Not used
+	return -1;
 }
 
-void Instructions::NOT(uint16_t params, Registers* registers, Memory*){
+int Instructions::NOT(uint16_t params, Registers* registers, Memory*){
 	Registers& reg = *registers;
 	uint16_t sr = params>>6 & mask[3];
 	uint16_t dr = params>>9 & mask[3];
 	reg[dr] = ~reg[sr];
+	return dr;
 }
 
-void Instructions::LDI(uint16_t params, Registers* registers, Memory* memory){
+int Instructions::LDI(uint16_t params, Registers* registers, Memory* memory){
 	Registers& reg = *registers;
 	Memory& mem = *memory;
 	uint16_t offset = params & mask[9];
 	uint16_t dr = (params>>9) & mask[3];
 	reg[dr] = mem[mem[reg[Registers::PC]+offset]];
+	return dr;
 }
 
-void Instructions::STI(uint16_t params, Registers* registers, Memory* memory){
+int Instructions::STI(uint16_t params, Registers* registers, Memory* memory){
 	Registers& reg = *registers;
 	Memory& mem = *memory;
 	uint16_t sr = params>>9 & mask[3];
 	uint16_t offset = sign_extend(params & mask[9], 9);
 	mem[mem[reg[Registers::PC]+offset]] = reg[sr];
+	return -1;
 }
 
-void Instructions::JMP(uint16_t params, Registers* registers, Memory*){
+int Instructions::JMP(uint16_t params, Registers* registers, Memory*){
 	Registers& reg = *registers;
 	uint16_t base_reg = params>>6 & mask[3];
 	reg[Registers::PC] = reg[base_reg];
+	return -1;
 }
 
-void Instructions::RES(uint16_t, Registers*, Memory*){
+int Instructions::RES(uint16_t, Registers*, Memory*){
 	//Not used
 }
 
-void Instructions::LEA(uint16_t params, Registers* registers, Memory*){
+int Instructions::LEA(uint16_t params, Registers* registers, Memory*){
 	Registers& reg = *registers;
 	uint16_t offset = sign_extend(params&mask[9], 9);
 	uint16_t dr = params>>9 & mask[3];
 	reg[dr] = reg[Registers::PC] + offset;
+	return dr;
 }
 
-void Instructions::TRAP(uint16_t params, Registers* registers, Memory* memory){
+int Instructions::TRAP(uint16_t params, Registers* registers, Memory* memory){
 	uint16_t trap_code = params & mask[8];
-	trap_routines.ExecuteTrapRoutine(trap_code, registers, memory);
+	int dr = trap_routines.ExecuteTrapRoutine(trap_code, registers, memory);
 	if(trap_routines.Status()==0){
 		//OK
 	}else if(trap_routines.Status()==1){
@@ -210,6 +226,7 @@ void Instructions::TRAP(uint16_t params, Registers* registers, Memory* memory){
 	}else{
 		status = TRAP_FAULT;
 	}
+	return dr;
 }
 
 

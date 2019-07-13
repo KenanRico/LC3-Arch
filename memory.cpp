@@ -5,6 +5,7 @@
 #include <string>
 #include <cstring>
 #include <stdio.h>
+#include <unistd.h>
 
 #include <sys/time.h>
 #include <sys/select.h>
@@ -73,7 +74,7 @@ uint16_t& Memory::operator[](int addr){
 			memory[KBSR] = 0;
 		}
 	}
-	return memory.at(i);
+	return memory.at(addr);
 }
 
 void Memory::PrintContent() const{

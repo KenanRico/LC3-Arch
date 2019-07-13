@@ -33,29 +33,33 @@ TrapRoutines::~TrapRoutines(){
 
 }
 
-void TrapRoutines::ExecuteTrapRoutine(uint16_t trap_code, Registers* registers, Memory* memory){
+int TrapRoutines::ExecuteTrapRoutine(uint16_t trap_code, Registers* registers, Memory* memory){
 	int trap_routine_index = trap_code - 0x20;
+	int r = -1;
 	if(trap_code<count){
-		(this->*routine[trap_routine_index])(&(*registers)[Registers::R0], memory);
+		r = (this->*routine[trap_routine_index])(&(*registers)[Registers::R0], memory);
 	}else{
 		status = BAD_TRAP_CODE;
 	}
+	return r;
 }
 
 /*---------------------------------------------------Trap routine implementations----------------------------------------------------------*/
 
 
-void TrapRoutines::Trap_GETC(uint16_t* R0, Memory*){
+int TrapRoutines::Trap_GETC(uint16_t* R0, Memory*){
 	char c = '\0';
 	std::cin>>c;
 	*R0 = (uint16_t)c;
+	return 0;
 }
 
-void TrapRoutines::Trap_OUT(uint16_t* R0, Memory*){
+int TrapRoutines::Trap_OUT(uint16_t* R0, Memory*){
 	std::cout<<(char)*R0;
+	return -1;
 }
 
-void TrapRoutines::Trap_PUTS(uint16_t* R0, Memory* memory){
+int TrapRoutines::Trap_PUTS(uint16_t* R0, Memory* memory){
 	Memory& mem = *memory;
 #if INC_BY==1
 	std::string str((char*)(&mem[0]+*R0));
@@ -63,13 +67,17 @@ void TrapRoutines::Trap_PUTS(uint16_t* R0, Memory* memory){
 	std::string str((char*)(&mem[*R0]));
 #endif
 	std::cout<<str;
+	return -1;
 }
 
-void TrapRoutines::Trap_IN(uint16_t* R0, Memory*){
-
+int TrapRoutines::Trap_IN(uint16_t* R0, Memory*){
+	char c = '\0';
+	std::cin>>c;
+	*R0 = (uint16_t)c;
+	return 0;
 }
 
-void TrapRoutines::Trap_PUTSP(uint16_t* R0, Memory* memory){
+int TrapRoutines::Trap_PUTSP(uint16_t* R0, Memory* memory){
 	Memory& mem = *memory;
 #if INC_BY==1
 	const uint16_t& unit = *(&mem[0]+*R0);
@@ -77,8 +85,10 @@ void TrapRoutines::Trap_PUTSP(uint16_t* R0, Memory* memory){
 	const uint16_t& unit = mem[*R0];
 #endif
 	std::cout<<(char)(unit&0xff)<<(char)(unit>>8&0xff);
+	return -1;
 }
 
-void TrapRoutines::Trap_HALT(uint16_t*, Memory*){
+int TrapRoutines::Trap_HALT(uint16_t*, Memory*){
 	status = HALT;
+	return -1;
 }

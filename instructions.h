@@ -9,7 +9,7 @@
 #include <array>
 
 class Instructions;
-using InstFuncPtr = void(Instructions::*)(uint16_t, Registers*, Memory*);
+using InstFuncPtr = int(Instructions::*)(uint16_t, Registers*, Memory*);
 
 class Instructions{
 	public:
@@ -50,22 +50,22 @@ class Instructions{
 		bool Execute(uint16_t, uint16_t, Registers*, Memory*);
 		inline int Status() const { return status; }
 	private:
-		void BR(uint16_t, Registers*, Memory*);
-		void ADD(uint16_t, Registers*, Memory*);
-		void LD(uint16_t, Registers*, Memory*);
-		void ST(uint16_t, Registers*, Memory*);
-		void JSR(uint16_t, Registers*, Memory*);
-		void AND(uint16_t, Registers*, Memory*);
-		void LDR(uint16_t, Registers*, Memory*);
-		void STR(uint16_t, Registers*, Memory*);
-		void RTI(uint16_t, Registers*, Memory*);
-		void NOT(uint16_t, Registers*, Memory*);
-		void LDI(uint16_t, Registers*, Memory*);
-		void STI(uint16_t, Registers*, Memory*);
-		void JMP(uint16_t, Registers*, Memory*);
-		void RES(uint16_t, Registers*, Memory*);
-		void LEA(uint16_t, Registers*, Memory*);
-		void TRAP(uint16_t, Registers*, Memory*);
+		int BR(uint16_t, Registers*, Memory*);
+		int ADD(uint16_t, Registers*, Memory*);
+		int LD(uint16_t, Registers*, Memory*);
+		int ST(uint16_t, Registers*, Memory*);
+		int JSR(uint16_t, Registers*, Memory*);
+		int AND(uint16_t, Registers*, Memory*);
+		int LDR(uint16_t, Registers*, Memory*);
+		int STR(uint16_t, Registers*, Memory*);
+		int RTI(uint16_t, Registers*, Memory*);
+		int NOT(uint16_t, Registers*, Memory*);
+		int LDI(uint16_t, Registers*, Memory*);
+		int STI(uint16_t, Registers*, Memory*);
+		int JMP(uint16_t, Registers*, Memory*);
+		int RES(uint16_t, Registers*, Memory*);
+		int LEA(uint16_t, Registers*, Memory*);
+		int TRAP(uint16_t, Registers*, Memory*);
 };
 
 #endif

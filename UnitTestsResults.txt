@@ -1,8 +1,20 @@
 Instruction Impl:
 	- BR:
 	- ADD: OK
+	- LD:
+	- ST:
+	- JSR:
 	- AND: OK
-	-
+	- LDR:
+	- STR:
+	- RTI:
+	- NOT:
+	- LDI:
+	- STI:
+	- JMP:
+	- RES:
+	- LEA:
+	- TRAP:
 Trap routine Impl:
 	- GETC:
 	- PUTS:
