@@ -27,6 +27,10 @@ int main(int argc, char** argv){
 	Registers regs;
 	Memory mem;
 	Instructions instructions;
+	UnitTest unit_test(&regs, &mem, &instructions);
+	unit_test.TestInst();
+	unit_test.TestMem();
+	unit_test.PrintResult();
 	/*Load program*/
 	mem.LoadImage("someexecutable");
 	/*execution loop*/
