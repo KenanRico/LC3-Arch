@@ -150,9 +150,9 @@ int Instructions::LDR(uint16_t params, Registers* registers, Memory* memory){
 	Registers& reg = *registers;
 	Memory& mem = *memory;
 	uint16_t sr = (params>>6) & mask[3];
-	uint16_t offset = sign_extend(params&mask[5], 5);
+	uint16_t offset = sign_extend(params&mask[6], 6);
 	uint16_t dr = (params>>9) & mask[3];
-	reg[dr] = mem[reg[sr]+offset,5];
+	reg[dr] = mem[reg[sr]+offset];
 	return dr;
 }
 
