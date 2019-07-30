@@ -2,8 +2,8 @@ Instruction Impl:
 	- BR: OK
 	- ADD: OK
 	- LD: OK
-	- ST:
-	- JSR:
+	- ST: OK
+	- JSR: OK
 	- AND: OK
 	- LDR:
 	- STR:

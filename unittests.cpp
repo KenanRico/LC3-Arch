@@ -65,14 +65,43 @@ void Instructions::TestAll(Registers* registers, Memory* memory){
 		regs[Registers::PC] = 0xf000;
 		regs[Registers::R7] = 0xf000;
 		ST(0x0e00, registers, memory);
-		if(mem[regs[Registers::PC]+sign_extend(0x0000, 9)]==regs[Registers::R7]) { std::cout<<"ST test#1 passed\n"; } else { std::cout<<"ST test#1 failed\n"; }
+		if(mem[regs[Registers::PC]+sign_extend(0x0000, 9)]==regs[Registers::R7]){
+			std::cout<<"ST test#1 passed\n";
+		}else{
+			std::cout<<"ST test#1 failed\n";
+		}
 		regs[Registers::PC] = 0xffff;
 		regs[Registers::R6] = 0xffff;
 		ST(0x0c0f, registers, memory);
-		if(mem[regs[Registers::PC]+sign_extend(0x000f, 9)]==regs[Registers::R6]) { std::cout<<"ST test#2 passed\n"; } else { std::cout<<"ST test#2 failed\n"; }
+		if(mem[regs[Registers::PC]+sign_extend(0x000f, 9)]==regs[Registers::R6]){
+			std::cout<<"ST test#2 passed\n";
+		}else{
+			std::cout<<"ST test#2 failed\n";
+		}
 		regs[Registers::PC] = 0xffff;
 		regs[Registers::R5] = 0xffff;
 		ST(0x0aff, registers, memory);
-		if(mem[regs[Registers::PC]+sign_extend(0x00ff, 9)]==regs[Registers::R5]) { std::cout<<"ST test#3 passed\n"; } else { std::cout<<"ST test#3 failed\n"; }
+		if(mem[regs[Registers::PC]+sign_extend(0x00ff, 9)]==regs[Registers::R5]){
+			std::cout<<"ST test#3 passed\n";
+		}else{
+			std::cout<<"ST test#3 failed\n";
+		}
+	}
+	/*JSR*/
+	{
+		regs[Registers::PC] = 0x0001;
+		JSR(0x080f, registers, memory);
+		if(regs[Registers::PC]==0x0010) {std::cout<<"JSR test#1 passed\n";} else {std::cout<<"JSR test#1 failed\n";}
+		regs[Registers::PC] = 0x0001;
+		JSR(0x09ff, registers, memory);
+		if(regs[Registers::PC]==0x0200) {std::cout<<"JSR test#2 passed\n";} else {std::cout<<"JSR test#2 failed\n";}
+		regs[Registers::PC] = 0xffff;
+		regs[Registers::R0] = 0xaaaa;
+		JSR(0x0000, registers, memory);
+		if(regs[Registers::PC]==0xaaaa) {std::cout<<"JSRR test#1 passed\n";} else {std::cout<<"JSRR test#1 failed\n";}
+		regs[Registers::PC] = 0xffff;
+		regs[Registers::R7] = 0xabcd;
+		JSR(0x01c0, registers, memory);
+		if(regs[Registers::PC]==0xabcd) {std::cout<<"JSRR test#2 passed\n";} else {std::cout<<"JSRR test#2 failed\n";}
 	}
 }
