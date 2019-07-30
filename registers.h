@@ -39,6 +39,9 @@ class Registers{
 		inline uint16_t& operator[](int i){ return reg.at(i); }
 		void UpdateFlag(int);
 		void PrintContent() const; 
+
+		/*unit tests*/
+		void TestAll();
 		
 };
 

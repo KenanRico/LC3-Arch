@@ -28,6 +28,9 @@ class Memory{
 		uint16_t& operator[](int);
 		void PrintContent() const;
 		inline int Status() const { return status; }
+
+		/*unit tests*/
+		void TestAll();
 };
 
 #endif

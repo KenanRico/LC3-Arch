@@ -66,6 +66,10 @@ class Instructions{
 		int RES(uint16_t, Registers*, Memory*);
 		int LEA(uint16_t, Registers*, Memory*);
 		int TRAP(uint16_t, Registers*, Memory*);
+
+	public:
+		/*unit tests*/
+		void TestAll(Registers*, Memory*);
 };
 
 #endif
