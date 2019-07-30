@@ -99,7 +99,7 @@ int Instructions::ADD(uint16_t params, Registers* registers, Memory* memory){
 int Instructions::LD(uint16_t params, Registers* registers, Memory* memory){
 	Registers& reg = *registers;
 	Memory& mem = *memory;
-	uint16_t offset = params & mask[9];
+	uint16_t offset = sign_extend(params & mask[9], 9);
 	uint16_t dr = (params>>9) & mask[3];
 	reg[dr] = mem[reg[Registers::PC]+offset];
 	return dr;
@@ -110,7 +110,7 @@ int Instructions::ST(uint16_t params, Registers* registers, Memory* memory){
 	Memory& mem = *memory;
 	uint16_t sr = params>>9 & mask[3];
 	uint16_t offset = sign_extend(params&mask[9], 9);
-	mem[Registers::PC+offset] = reg[sr];
+	mem[reg[Registers::PC]+offset] = reg[sr];
 	return -1;
 }
 
@@ -182,7 +182,7 @@ int Instructions::NOT(uint16_t params, Registers* registers, Memory*){
 int Instructions::LDI(uint16_t params, Registers* registers, Memory* memory){
 	Registers& reg = *registers;
 	Memory& mem = *memory;
-	uint16_t offset = params & mask[9];
+	uint16_t offset = sign_extend(params & mask[9], 9);
 	uint16_t dr = (params>>9) & mask[3];
 	reg[dr] = mem[mem[reg[Registers::PC]+offset]];
 	return dr;

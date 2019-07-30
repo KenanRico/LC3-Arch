@@ -65,7 +65,7 @@ int CheckKey(){
 	return select(1, &readfds, NULL, NULL, &timeout) != 0;
 }
 
-uint16_t& Memory::operator[](int addr){
+uint16_t& Memory::operator[](uint16_t addr){
 	if(addr==KBSR){
 		if(CheckKey()!=0){
 			memory[KBSR] = 1<<15;

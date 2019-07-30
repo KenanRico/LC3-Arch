@@ -72,4 +72,6 @@ class Instructions{
 		void TestAll(Registers*, Memory*);
 };
 
+uint16_t sign_extend(uint16_t, int);
+
 #endif

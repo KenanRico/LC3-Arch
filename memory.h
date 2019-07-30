@@ -25,7 +25,7 @@ class Memory{
 
 	public:
 		void LoadImage(const std::string&);
-		uint16_t& operator[](int);
+		uint16_t& operator[](uint16_t);
 		void PrintContent() const;
 		inline int Status() const { return status; }
 

@@ -5,6 +5,8 @@
 #include <iostream>
 
 
+
+
 void Registers::TestAll(){
 	std::cout<<"========================Starting register tests...========================\n";
 
@@ -33,24 +35,44 @@ void Instructions::TestAll(Registers* registers, Memory* memory){
 	}
 	/*LD*/
 	{
-		regs[Registers::PC] = 0x0000;
-		regs[Registers::R0] = 0x0000;
+		regs[Registers::PC] = 0xffff;
+		regs[Registers::R0] = 0xffff;
 		LD(0x0000, registers, memory);
-		if(regs[Registers::R0]==mem[regs[Registers::PC]+0x0000]) { std::cout<<"LD test#1 passed\n"; } else { std::cout<<"LD test#1 failed\n"; }
+		if(regs[Registers::R0]==mem[regs[Registers::PC]+sign_extend(0x0000, 9)]){
+			std::cout<<"LD test#1 passed\n";
+		}else{
+			std::cout<<"LD test#1 failed\n";
+		}
 		regs[Registers::PC] = 0x0000;
 		regs[Registers::R1] = 0x0000;
 		LD(0x020f, registers, memory);
-		if(regs[Registers::R1]==mem[regs[Registers::PC]+0x000f]) { std::cout<<"LD test#2 passed\n"; } else { std::cout<<"LD test#2 failed\n"; }
+		if(regs[Registers::R1]==mem[regs[Registers::PC]+sign_extend(0x000f, 9)]){
+			std::cout<<"LD test#2 passed\n";
+		}else{
+			std::cout<<"LD test#2 failed\n";
+		}
 		regs[Registers::PC] = 0x0000;
 		regs[Registers::R2] = 0x0000;
 		LD(0x04ff, registers, memory);
-		if(regs[Registers::R2]==mem[regs[Registers::PC]+0x00ff]) { std::cout<<"LD test#3 passed\n"; } else { std::cout<<"LD test#3 failed\n"; }
+		if(regs[Registers::R2]==mem[regs[Registers::PC]+sign_extend(0x00ff, 9)]){
+			std::cout<<"LD test#3 passed\n";
+		}else{
+			std::cout<<"LD test#3 failed\n";
+		}
 	}
 	/*ST*/
 	{
-		regs[Registers::PC] = 0x0000;
-		regs[Registers::R7] = 0x0000;
-		ST(0x????, registers, memory);
-		if(mem[]==regs[]) {} else {}
+		regs[Registers::PC] = 0xf000;
+		regs[Registers::R7] = 0xf000;
+		ST(0x0e00, registers, memory);
+		if(mem[regs[Registers::PC]+sign_extend(0x0000, 9)]==regs[Registers::R7]) { std::cout<<"ST test#1 passed\n"; } else { std::cout<<"ST test#1 failed\n"; }
+		regs[Registers::PC] = 0xffff;
+		regs[Registers::R6] = 0xffff;
+		ST(0x0c0f, registers, memory);
+		if(mem[regs[Registers::PC]+sign_extend(0x000f, 9)]==regs[Registers::R6]) { std::cout<<"ST test#2 passed\n"; } else { std::cout<<"ST test#2 failed\n"; }
+		regs[Registers::PC] = 0xffff;
+		regs[Registers::R5] = 0xffff;
+		ST(0x0aff, registers, memory);
+		if(mem[regs[Registers::PC]+sign_extend(0x00ff, 9)]==regs[Registers::R5]) { std::cout<<"ST test#3 passed\n"; } else { std::cout<<"ST test#3 failed\n"; }
 	}
 }
