@@ -122,4 +122,22 @@ void Instructions::TestAll(Registers* registers, Memory* memory){
 		LDR(0x0b10, registers, memory);
 		if(regs[Registers::R5]==0xb00b) {std::cout<<"LDR test#3 passed\n";} else {std::cout<<"LDR test#3 failed\n";}
 	}
+	/*STR*/
+	{
+		regs[Registers::R0] = 0x000f;
+		regs[Registers::R1] = 0x9999;
+		mem[0x0010] = 0xffff;
+		STR(0x0201, registers, memory);
+		if(mem[0x0010]==0x9999) {std::cout<<"STR test#1 passed\n";} else {std::cout<<"STR test#1 failed\n";}
+		regs[Registers::R2] = 0x00aa;
+		regs[Registers::R3] = 0xabcd;
+		mem[0x00b3] = 0xffff;
+		STR(0x0689, registers, memory);
+		if(mem[0x00b3]==0xabcd) {std::cout<<"STR test#2 passed\n";} else {std::cout<<"STR test#2 failed\n";}
+		regs[Registers::R4] = 0x0500;
+		regs[Registers::R5] = 0xb00b;
+		mem[0x0510] = 0xffff;
+		STR(0x0b10, registers, memory);
+		if(mem[0x0510]==0xb00b) {std::cout<<"STR test#3 passed\n";} else {std::cout<<"STR test#3 failed\n";}
+	}
 }

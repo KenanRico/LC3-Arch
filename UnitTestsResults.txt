@@ -6,7 +6,7 @@ Instruction Impl:
 	- JSR: OK
 	- AND: OK
 	- LDR: OK
-	- STR:
+	- STR: OK
 	- RTI:
 	- NOT:
 	- LDI:
