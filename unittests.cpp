@@ -159,7 +159,29 @@ void Instructions::TestAll(Registers* registers, Memory* memory){
 
 	/*LDI*/
 	{
+		uint16_t& pc = regs[Registers::PC];
 
+		uint16_t& dr1 = regs[Registers::R1];
+		dr1 = 0xffff;
+		pc = 0x0100;
+		mem[0x0101] = 0x0001;
+		mem[0x0001] = 0x1234;
+		LDI(0x0201, registers, memory);
+		if(dr1==0x1234) {std::cout<<"LDI test#1 passed\n";} else {std::cout<<"LDI test#1 failed\n";}
+		uint16_t& dr2 = regs[Registers::R2];
+		dr2 = 0xffff;
+		pc = 0x0100;
+		mem[0x10f] = 0x0002;
+		mem[0x0002] = 0x2345;
+		LDI(0x040f, registers, memory);
+		if(dr2==0x2345) {std::cout<<"LDI test#2 passed\n";} else {std::cout<<"LDI test#2 failed\n";}
+		uint16_t& dr4 = regs[Registers::R4];
+		dr4 = 0xffff;
+		pc = 0x0100;
+		mem[0x1ff] = 0x0003;
+		mem[0x0003] = 0x3456;
+		LDI(0x08ff, registers, memory);
+		if(dr4==0x3456) {std::cout<<"LDI test#3 passed\n";} else {std::cout<<"LDI test#3 failed\n";}
 	}
 
 	/*STI*/

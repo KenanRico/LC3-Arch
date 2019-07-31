@@ -9,7 +9,7 @@ Instruction Impl:
 	- STR: OK
 	- RTI: NOT USED
 	- NOT: OK
-	- LDI:
+	- LDI: OK
 	- STI:
 	- JMP:
 	- RES:
