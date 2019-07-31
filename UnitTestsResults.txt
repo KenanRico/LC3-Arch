@@ -7,8 +7,8 @@ Instruction Impl:
 	- AND: OK
 	- LDR: OK
 	- STR: OK
-	- RTI:
-	- NOT:
+	- RTI: NOT USED
+	- NOT: OK
 	- LDI:
 	- STI:
 	- JMP:

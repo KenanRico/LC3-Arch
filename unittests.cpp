@@ -140,4 +140,30 @@ void Instructions::TestAll(Registers* registers, Memory* memory){
 		STR(0x0b10, registers, memory);
 		if(mem[0x0510]==0xb00b) {std::cout<<"STR test#3 passed\n";} else {std::cout<<"STR test#3 failed\n";}
 	}
+
+	/*NOT*/
+	{
+		regs[Registers::R0] = 0x1234;
+		regs[Registers::R1] = 0xffff;
+		NOT(0x0200, registers, memory);
+		if(regs[Registers::R1]==0xedcb) {std::cout<<"NOT test#1 passed\n";} else {std::cout<<"NOT test#1 failed\n";}
+		regs[Registers::R2] = 0x6666;
+		regs[Registers::R3] = 0xffff;
+		NOT(0x0680, registers, memory);
+		if(regs[Registers::R3]==0x9999) {std::cout<<"NOT test#2 passed\n";} else {std::cout<<"NOT test#2 failed\n";}
+		regs[Registers::R4] = 0x1337;
+		regs[Registers::R5] = 0xffff;
+		NOT(0x0b00, registers, memory);
+		if(regs[Registers::R5]==0xecc8) {std::cout<<"NOT test#3 passed\n";} else {std::cout<<"NOT test#3 failed\n";}
+	}
+
+	/*LDI*/
+	{
+
+	}
+
+	/*STI*/
+	{
+
+	}
 }

@@ -171,6 +171,7 @@ int Instructions::RTI(uint16_t, Registers*, Memory*){
 	return -1;
 }
 
+#include <iostream>
 int Instructions::NOT(uint16_t params, Registers* registers, Memory*){
 	Registers& reg = *registers;
 	uint16_t sr = params>>6 & mask[3];
