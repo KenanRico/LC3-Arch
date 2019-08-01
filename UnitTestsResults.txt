@@ -10,7 +10,7 @@ Instruction Impl:
 	- RTI: NOT USED
 	- NOT: OK
 	- LDI: OK
-	- STI:
+	- STI: OK
 	- JMP:
 	- RES:
 	- LEA:

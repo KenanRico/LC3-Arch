@@ -186,6 +186,29 @@ void Instructions::TestAll(Registers* registers, Memory* memory){
 
 	/*STI*/
 	{
+		uint16_t& pc = regs[Registers::PC];
+
+		regs[Registers::R1] = 0x1234;
+		pc = 0x0100;
+		mem[0x0101] = 0x0001;
+		uint16_t& mem1 = mem[0x0001];
+		mem1 = 0xffff;
+		STI(0x0201, registers, memory);
+		if(mem1==0x1234) {std::cout<<"STI test#1 passed\n";} else {std::cout<<"STI test#1 failed\n";}
+		regs[Registers::R2] = 0x2345;
+		pc = 0x0100;
+		mem[0x10f] = 0x0002;
+		uint16_t& mem2 = mem[0x0002];
+		mem2 = 0xffff;
+		STI(0x040f, registers, memory);
+		if(mem2==0x2345) {std::cout<<"STI test#2 passed\n";} else {std::cout<<"STI test#2 failed\n";}
+		regs[Registers::R4] = 0x3456;
+		pc = 0x0100;
+		mem[0x1ff] = 0x0003;
+		uint16_t& mem3 = mem[0x0003];
+		mem3 = 0xffff;
+		STI(0x08ff, registers, memory);
+		if(mem3==0x3456) {std::cout<<"STI test#3 passed\n";} else {std::cout<<"STI test#3 failed\n";}
 
 	}
 }
