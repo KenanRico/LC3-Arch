@@ -246,4 +246,13 @@ void Instructions::TestAll(Registers* registers, Memory* memory){
 		LEA(0x04ff, registers, memory);
 		if(regs[Registers::R2]==0x30ff) {std::cout<<"LEA test#3 passed\n";} else {std::cout<<"LEA test#3 failed\n";}
 	}
+
+	/*TRAP*/
+	{
+		/*GETC*/
+		/*IN*/
+		/*PUTS*/
+		/*OUT*/
+		/*PUTSP*/
+	}
 }
