@@ -11,8 +11,8 @@ Instruction Impl:
 	- NOT: OK
 	- LDI: OK
 	- STI: OK
-	- JMP:
-	- RES:
+	- JMP: OK
+	- RES: NOT USED
 	- LEA:
 	- TRAP:
 Trap routine Impl:

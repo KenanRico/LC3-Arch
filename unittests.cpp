@@ -209,6 +209,23 @@ void Instructions::TestAll(Registers* registers, Memory* memory){
 		mem3 = 0xffff;
 		STI(0x08ff, registers, memory);
 		if(mem3==0x3456) {std::cout<<"STI test#3 passed\n";} else {std::cout<<"STI test#3 failed\n";}
+	}
 
+	/*JMP*/
+	{
+		uint16_t& pc = regs[Registers::PC];
+		
+		pc = 0x0000;
+		regs[Registers::R0] = 0x6666;
+		JMP(0x0000, registers, memory);
+		if(0x6666) {std::cout<<"JMP test#1 passed\n";} else {std::cout<<"JMP test#1 failed\n";}
+		pc = 0x0000;
+		regs[Registers::R1] = 0xaaaa;
+		JMP(0x0040, registers, memory);
+		if(pc==0xaaaa) {std::cout<<"JMP test#2 passed\n";} else {std::cout<<"JMP test#2 failed\n";}
+		pc = 0x0000;
+		regs[Registers::R2] = 0x8888;
+		JMP(0x0080, registers, memory);
+		if(pc==0x8888) {std::cout<<"JMP test#3 passed\n";} else {std::cout<<"JMP test#3 failed\n";}
 	}
 }
