@@ -214,7 +214,7 @@ void Instructions::TestAll(Registers* registers, Memory* memory){
 	/*JMP*/
 	{
 		uint16_t& pc = regs[Registers::PC];
-		
+
 		pc = 0x0000;
 		regs[Registers::R0] = 0x6666;
 		JMP(0x0000, registers, memory);
@@ -227,5 +227,23 @@ void Instructions::TestAll(Registers* registers, Memory* memory){
 		regs[Registers::R2] = 0x8888;
 		JMP(0x0080, registers, memory);
 		if(pc==0x8888) {std::cout<<"JMP test#3 passed\n";} else {std::cout<<"JMP test#3 failed\n";}
+	}
+
+	/*LEA*/
+	{
+		uint16_t& pc = regs[Registers::PC];
+		
+		pc = 0x1000;
+		regs[Registers::R0] = 0x0000;
+		LEA(0x0001, registers, memory);
+		if(regs[Registers::R0]==0x1001) {std::cout<<"LEA test#1 passed\n";} else {std::cout<<"LEA test#1 failed\n";}
+		pc = 0x2000;
+		regs[Registers::R1] = 0x0000;
+		LEA(0x020f, registers, memory);
+		if(regs[Registers::R1]==0x200f) {std::cout<<"LEA test#2 passed\n";} else {std::cout<<"LEA test#2 failed\n";}
+		pc = 0x3000;
+		regs[Registers::R2] = 0x0000;
+		LEA(0x04ff, registers, memory);
+		if(regs[Registers::R2]==0x30ff) {std::cout<<"LEA test#3 passed\n";} else {std::cout<<"LEA test#3 failed\n";}
 	}
 }
