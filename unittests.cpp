@@ -17,7 +17,7 @@ void Memory::TestAll(){
 
 }
 
-void Instructions::TestAll(Registers* registers, Memory* memory){
+void Instructions::TestNonTrap(Registers* registers, Memory* memory){
 	std::cout<<"========================Starting instruction tests...========================\n";
 	Registers& regs = *registers;
 	Memory& mem = *memory;
@@ -247,12 +247,42 @@ void Instructions::TestAll(Registers* registers, Memory* memory){
 		if(regs[Registers::R2]==0x30ff) {std::cout<<"LEA test#3 passed\n";} else {std::cout<<"LEA test#3 failed\n";}
 	}
 
-	/*TRAP*/
+}
+
+void Instructions::TestTraps(Registers* registers, Memory* memory){
+
+	Registers& regs = *registers;
+	Memory& mem = *memory;
+
+	/*GETC*/
 	{
-		/*GETC*/
-		/*IN*/
-		/*PUTS*/
-		/*OUT*/
-		/*PUTSP*/
+		regs[Registers::R0] = 0xffff;
+		TRAP(0x0020, registers, memory);
+		if(trap_routines.Status()==0){
+			std::cout<<regs[Registers::R0]<<"\n";
+		}else{
+			std::cout<<"TRAP error: "<<trap_routines.BadTrapCode()<<"\n";
+		}
 	}
+
+	/*IN*/
+	{
+
+	}
+
+	/*PUTS*/
+	{
+
+	}
+
+	/*OUT*/
+	{
+
+	}
+
+	/*PUTSP*/
+	{
+
+	}
+
 }

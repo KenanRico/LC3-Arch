@@ -21,15 +21,20 @@ int main(int argc, char** argv){
 	*/
 
 #if MODE==TEST	
+	Platform* tplatform = new Platform();
 	Registers* tregs = new Registers();
 	Memory* tmem = new Memory();
 	Instructions* tinstructions = new Instructions();
 	tregs->TestAll();
 	tmem->TestAll();
-	tinstructions->TestAll(tregs, tmem);
+	tinstructions->TestNonTrap(tregs, tmem);
+	tplatform->DisableInputBuffering();
+	tinstructions->TestTraps(tregs, tmem);
+	tplatform->RestoreInputBuffering();
 	delete tregs; tregs=nullptr;
 	delete tmem; tmem=nullptr;
 	delete tinstructions; tinstructions=nullptr;
+	delete tplatform; tplatform = nullptr;
 #elif MODE==RUN
 	/*Configure platform*/
 	Platform platform;

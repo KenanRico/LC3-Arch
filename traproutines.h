@@ -23,6 +23,7 @@ class TrapRoutines{
 		};
 	private:
 		std::array<TrapFuncPtr, count> routine;
+		uint16_t bad_trap_code;
 		int status;
 
 	public:
@@ -35,6 +36,7 @@ class TrapRoutines{
 	public:
 		int ExecuteTrapRoutine(uint16_t, Registers*, Memory*);
 		inline int Status() const { return status; }
+		inline uint16_t BadTrapCode() const { return bad_trap_code; }
 	private:
 		int Trap_GETC(uint16_t*, Memory*);
 		int Trap_OUT(uint16_t*, Memory*);

@@ -36,10 +36,11 @@ TrapRoutines::~TrapRoutines(){
 int TrapRoutines::ExecuteTrapRoutine(uint16_t trap_code, Registers* registers, Memory* memory){
 	int trap_routine_index = trap_code - 0x20;
 	int r = -1;
-	if(trap_code<count){
+	if(trap_routine_index<count){
 		r = (this->*routine[trap_routine_index])(&(*registers)[Registers::R0], memory);
 	}else{
 		status = BAD_TRAP_CODE;
+		bad_trap_code = trap_code;
 	}
 	return r;
 }

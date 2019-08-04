@@ -69,7 +69,8 @@ class Instructions{
 
 	public:
 		/*unit tests*/
-		void TestAll(Registers*, Memory*);
+		void TestNonTrap(Registers*, Memory*);
+		void TestTraps(Registers*, Memory*);
 };
 
 uint16_t sign_extend(uint16_t, int);
