@@ -265,9 +265,10 @@ void Instructions::TestTraps(Registers* registers, Memory* memory){
 		}
 	}
 
-	/*IN*/
+	/*OUT*/
 	{
-
+		regs[Registers::R0] = 0x21;
+		TRAP(0x0021, registers, memory);
 	}
 
 	/*PUTS*/
@@ -275,7 +276,7 @@ void Instructions::TestTraps(Registers* registers, Memory* memory){
 
 	}
 
-	/*OUT*/
+	/*IN*/
 	{
 
 	}

@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <array>
 #include <iostream>
+#include <sstream>
 
 
 #define INC_BY 1
@@ -62,12 +63,13 @@ int TrapRoutines::Trap_OUT(uint16_t* R0, Memory*){
 
 int TrapRoutines::Trap_PUTS(uint16_t* R0, Memory* memory){
 	Memory& mem = *memory;
-#if INC_BY==1
-	std::string str((char*)(&mem[0]+*R0));
-#elif INC_BY==2
-	std::string str((char*)(&mem[*R0]));
-#endif
-	std::cout<<str;
+	std::stringstream ss;
+	uint16_t* str = &mem[*R0];
+	while(*str!=0){
+		ss<<*str;
+		++str;
+	}
+	std::cout<<ss.str();
 	return -1;
 }
 
