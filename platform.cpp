@@ -17,10 +17,16 @@ Platform::~Platform(){
 
 }
 
+/*
+ *Put stdio in non-canonical mode
+ */
 void Platform::DisableInputBuffering(){
 	tcsetattr(STDIN_FILENO, TCSANOW, &new_tio);
 }
 
+/*
+ *restore standard stdio
+ */
 void Platform::RestoreInputBuffering(){
 	tcsetattr(STDIN_FILENO, TCSANOW, &original_tio);
 	printf("\n");

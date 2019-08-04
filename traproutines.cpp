@@ -63,31 +63,36 @@ int TrapRoutines::Trap_OUT(uint16_t* R0, Memory*){
 
 int TrapRoutines::Trap_PUTS(uint16_t* R0, Memory* memory){
 	Memory& mem = *memory;
-	std::stringstream ss;
-	uint16_t* str = &mem[*R0];
-	while(*str!=0){
-		ss<<(char)*str;
-		++str;
+	uint16_t* c = &mem[*R0];
+	std::string str = "";
+	while(*c!=0){
+		str.push_back((char)*c);
+		++c;
 	}
-	std::cout<<ss.str();
+	std::cout<<str;
 	return -1;
 }
 
 int TrapRoutines::Trap_IN(uint16_t* R0, Memory*){
+	std::cout<<"Enter a character: ";
 	char c = '\0';
 	std::cin>>c;
+	std::cout<<c;
 	*R0 = (uint16_t)c;
 	return 0;
 }
 
 int TrapRoutines::Trap_PUTSP(uint16_t* R0, Memory* memory){
 	Memory& mem = *memory;
-#if INC_BY==1
-	const uint16_t& unit = *(&mem[0]+*R0);
-#elif INC_BY==2
-	const uint16_t& unit = mem[*R0];
-#endif
-	std::cout<<(char)(unit&0xff)<<(char)(unit>>8&0xff);
+	uint8_t* c = (uint8_t*)&mem[*R0];
+	std::string str = "";
+	while(*c!=0){
+		//str.push_back((uint8_t)(*c&0x00ff));
+		//str.push_back((uint8_t)(*c>>8));
+		str.push_back((char)*c);
+		++c;
+	}
+	std::cout<<str;
 	return -1;
 }
 

@@ -282,15 +282,31 @@ void Instructions::TestTraps(Registers* registers, Memory* memory){
 		mem[r0+4] = 'o';
 		mem[r0+5] = '\0';
 		TRAP(TrapRoutines::PUTS, registers, memory);
+		if(trap_routines.Status()!=0){
+			std::cout<<"TRAP error: "<<trap_routines.BadTrapCode()<<"\n";
+		}
 	}
 
 	/*IN*/
 	{
-
+		r0 = 0xffff;
+		TRAP(TrapRoutines::IN, registers, memory);
 	}
 
 	/*PUTSP*/
 	{
+		r0 = 0x00aa;
+		char* c = (char*)&mem[r0];
+		*c = 'a';
+		*(c+1) = 'p';
+		*(c+2) = 'p';
+		*(c+3) = 'l';
+		*(c+4) = 'e';
+		*(c+5) = '\0';
+		TRAP(TrapRoutines::PUTSP, registers, memory);
+		if(trap_routines.Status()!=0){
+			std::cout<<"TRAP error: "<<trap_routines.BadTrapCode()<<"\n";
+		}
 
 	}
 
