@@ -41,7 +41,7 @@ void Memory::LoadImage(const std::string& image_path){
 	uint16_t origin = 0;
 	fread(&origin, sizeof(origin), 1, file);
 	origin = Swap16(origin);
-	/*Read rest of image*/
+	/*Read rest of image into memory*/
 	uint16_t max_read = size - origin;
 	uint16_t* p = &memory[0] + origin;
 	size_t read = fread(p, sizeof(uint16_t), max_read, file);

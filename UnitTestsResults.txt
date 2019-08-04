@@ -16,9 +16,11 @@ Instruction Impl:
 	- LEA: OK
 	- TRAP:
 Trap routine Impl:
-	- GETC:
-	- PUTS:
-	-
+	- GETC: OK
+	- OUT: OK
+	- PUTS: OK
+	- IN: OK
+	- PUTSP: OK
 Other functions:
 	- Memory::LoadImage():
 	- Memory::operator[]():

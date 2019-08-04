@@ -14,7 +14,15 @@ void Registers::TestAll(){
 
 void Memory::TestAll(){
 	std::cout<<"========================Starting memory tests...========================\n";
-
+	LoadImage("./Test/test_bin");
+	if(status==0){
+		for(int i=0; i<64; ++i){
+			std::cout<<memory[i]<<" ";
+		}
+	}else{
+		std::cout<<"Failed to load file: "<<status;
+	}
+	std::cout<<"\n";
 }
 
 void Instructions::TestNonTrap(Registers* registers, Memory* memory){
