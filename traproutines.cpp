@@ -66,7 +66,7 @@ int TrapRoutines::Trap_PUTS(uint16_t* R0, Memory* memory){
 	std::stringstream ss;
 	uint16_t* str = &mem[*R0];
 	while(*str!=0){
-		ss<<*str;
+		ss<<(char)*str;
 		++str;
 	}
 	std::cout<<ss.str();

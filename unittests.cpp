@@ -252,14 +252,15 @@ void Instructions::TestNonTrap(Registers* registers, Memory* memory){
 void Instructions::TestTraps(Registers* registers, Memory* memory){
 
 	Registers& regs = *registers;
+	uint16_t& r0 = regs[Registers::R0];
 	Memory& mem = *memory;
 
 	/*GETC*/
 	{
-		regs[Registers::R0] = 0xffff;
-		TRAP(0x0020, registers, memory);
+		r0 = 0xffff;
+		TRAP(TrapRoutines::GETC, registers, memory);
 		if(trap_routines.Status()==0){
-			std::cout<<regs[Registers::R0]<<"\n";
+			std::cout<<r0<<"\n";
 		}else{
 			std::cout<<"TRAP error: "<<trap_routines.BadTrapCode()<<"\n";
 		}
@@ -267,13 +268,20 @@ void Instructions::TestTraps(Registers* registers, Memory* memory){
 
 	/*OUT*/
 	{
-		regs[Registers::R0] = 0x21;
-		TRAP(0x0021, registers, memory);
+		r0 = '!';
+		TRAP(TrapRoutines::OUT, registers, memory);
 	}
 
 	/*PUTS*/
 	{
-
+		r0 = 0x00aa;
+		mem[r0] = 'h';
+		mem[r0+1] = 'e';
+		mem[r0+2] = 'l';
+		mem[r0+3] = 'l';
+		mem[r0+4] = 'o';
+		mem[r0+5] = '\0';
+		TRAP(TrapRoutines::PUTS, registers, memory);
 	}
 
 	/*IN*/
