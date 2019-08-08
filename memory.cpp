@@ -42,9 +42,10 @@ void Memory::LoadImage(const std::string& image_path){
 	fread(&origin, sizeof(origin), 1, file);
 	origin = Swap16(origin);
 	/*Read rest of image into memory*/
-	uint16_t max_read = size - origin;
+	uint16_t max_read = size-origin;
 	uint16_t* p = &memory[0] + origin;
 	size_t read = fread(p, sizeof(uint16_t), max_read, file);
+	fclose(file);
 	/*swap to litten endian*/
 	while(read-- > 0){
 		*p = Swap16(*p);
@@ -55,6 +56,7 @@ void Memory::LoadImage(const std::string& image_path){
 /*
  * key checking helper func
  */
+#include <iostream>
 int CheckKey(){
 	fd_set readfds;
 	FD_ZERO(&readfds);
@@ -65,7 +67,25 @@ int CheckKey(){
 	return select(1, &readfds, NULL, NULL, &timeout) != 0;
 }
 
+
+
 uint16_t& Memory::operator[](uint16_t addr){
+	if(addr==KBSR){
+		if(CheckKey()!=0){
+			memory[KBSR] = 1<<15;
+			memory[KBDR] = getchar();
+		}else{
+			memory[KBSR] = 0;
+		}
+	}
+	return memory.at(addr);
+}
+
+void Memory::Write(uint16_t addr, uint16_t val){
+	memory[addr] = val;
+}
+
+const uint16_t& Memory::Read(uint16_t addr){
 	if(addr==KBSR){
 		if(CheckKey()!=0){
 			memory[KBSR] = 1<<15;

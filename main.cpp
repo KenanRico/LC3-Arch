@@ -10,16 +10,6 @@
 
 
 int main(int argc, char** argv){
-	/*
-	regs.PrintContent();
-	instructions.Execute(Instructions::OP_ADD, 0x002c, &regs, &mem);
-	regs.PrintContent();
-	instructions.Execute(Instructions::OP_ADD, 0x0267, &regs, &mem);
-	regs.PrintContent();
-	instructions.Execute(Instructions::OP_AND, 0x0440, &regs, &mem);
-	regs.PrintContent();
-	*/
-
 #if MODE==TEST	
 	Platform* tplatform = new Platform();
 	Registers* tregs = new Registers();
@@ -43,14 +33,17 @@ int main(int argc, char** argv){
 	Memory mem;
 	Instructions instructions;
 	/*Load program*/
-	mem.LoadImage("./Test/2048.obj");
+	mem.LoadImage("./Test/rogue.obj");
 	/*execution loop*/
 	regs[Registers::PC] = 0x3000;
 	//platform.DisableInputBuffering();
-	while((mem.Status()|instructions.Status())==0x0){
-		uint16_t instruction = mem[regs.GetIncPC()];
+	//while((mem.Status()|instructions.Status())==0x0){
+	int i = 0;
+	while(i++ < 100){
+		uint16_t instruction = mem.Read(regs.GetIncPC());
 		uint16_t opcode = 0;
 		uint16_t params = 0;
+		std::cout<<std::hex<<"Instruction: "<<instruction<<"\n";
 		instructions.Parse(instruction, &opcode, &params);
 		instructions.Execute(opcode, params, &regs, &mem);
 	}

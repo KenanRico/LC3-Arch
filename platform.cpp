@@ -29,5 +29,4 @@ void Platform::DisableInputBuffering(){
  */
 void Platform::RestoreInputBuffering(){
 	tcsetattr(STDIN_FILENO, TCSANOW, &original_tio);
-	printf("\n");
 }

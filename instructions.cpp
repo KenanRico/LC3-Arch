@@ -101,7 +101,7 @@ int Instructions::LD(uint16_t params, Registers* registers, Memory* memory){
 	Memory& mem = *memory;
 	uint16_t offset = sign_extend(params & mask[9], 9);
 	uint16_t dr = (params>>9) & mask[3];
-	reg[dr] = mem[reg[Registers::PC]+offset];
+	reg[dr] = mem.Read(reg[Registers::PC]+offset);
 	return dr;
 }
 
@@ -110,7 +110,7 @@ int Instructions::ST(uint16_t params, Registers* registers, Memory* memory){
 	Memory& mem = *memory;
 	uint16_t sr = params>>9 & mask[3];
 	uint16_t offset = sign_extend(params&mask[9], 9);
-	mem[reg[Registers::PC]+offset] = reg[sr];
+	mem.Write(reg[Registers::PC]+offset, reg[sr]);
 	return -1;
 }
 
@@ -152,7 +152,7 @@ int Instructions::LDR(uint16_t params, Registers* registers, Memory* memory){
 	uint16_t sr = (params>>6) & mask[3];
 	uint16_t offset = sign_extend(params&mask[6], 6);
 	uint16_t dr = (params>>9) & mask[3];
-	reg[dr] = mem[reg[sr]+offset];
+	reg[dr] = mem.Read(reg[sr]+offset);
 	return dr;
 }
 
@@ -162,7 +162,7 @@ int Instructions::STR(uint16_t params, Registers* registers, Memory* memory){
 	uint16_t sr = (params>>9) & mask[3];
 	uint16_t br = (params>>6) & mask[3];
 	uint16_t offset = sign_extend(params & mask[6], 6);
-	mem[reg[br]+offset] = reg[sr];
+	mem.Write(reg[br]+offset, reg[sr]);
 	return -1;
 }
 
@@ -171,7 +171,6 @@ int Instructions::RTI(uint16_t, Registers*, Memory*){
 	return -1;
 }
 
-#include <iostream>
 int Instructions::NOT(uint16_t params, Registers* registers, Memory*){
 	Registers& reg = *registers;
 	uint16_t sr = params>>6 & mask[3];
@@ -185,7 +184,7 @@ int Instructions::LDI(uint16_t params, Registers* registers, Memory* memory){
 	Memory& mem = *memory;
 	uint16_t offset = sign_extend(params & mask[9], 9);
 	uint16_t dr = (params>>9) & mask[3];
-	reg[dr] = mem[mem[reg[Registers::PC]+offset]];
+	reg[dr] = mem.Read(mem.Read(reg[Registers::PC]+offset));
 	return dr;
 }
 
@@ -194,7 +193,7 @@ int Instructions::STI(uint16_t params, Registers* registers, Memory* memory){
 	Memory& mem = *memory;
 	uint16_t sr = params>>9 & mask[3];
 	uint16_t offset = sign_extend(params & mask[9], 9);
-	mem[mem[reg[Registers::PC]+offset]] = reg[sr];
+	mem.Write(mem.Read(reg[Registers::PC]+offset), reg[sr]);
 	return -1;
 }
 
@@ -227,7 +226,7 @@ int Instructions::TRAP(uint16_t params, Registers* registers, Memory* memory){
 	}else{
 		status = TRAP_FAULT;
 	}
-	return dr;
+	return -1;
 }
 
 
