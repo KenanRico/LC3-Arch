@@ -1,6 +1,7 @@
 #include "registers.h"
 #include "memory.h"
 #include "instructions.h"
+#include "platform.h"
 
 #include <iostream>
 
@@ -318,4 +319,22 @@ void Instructions::TestTraps(Registers* registers, Memory* memory){
 
 	}
 
+}
+
+
+void RunUnittests(){
+	Platform* tplatform = new Platform();
+	Registers* tregs = new Registers();
+	Memory* tmem = new Memory();
+	Instructions* tinstructions = new Instructions();
+	tregs->TestAll();
+	tmem->TestAll();
+	tinstructions->TestNonTrap(tregs, tmem);
+	tplatform->DisableInputBuffering();
+	tinstructions->TestTraps(tregs, tmem);
+	tplatform->RestoreInputBuffering();
+	delete tregs; tregs=nullptr;
+	delete tmem; tmem=nullptr;
+	delete tinstructions; tinstructions=nullptr;
+	delete tplatform; tplatform = nullptr;
 }

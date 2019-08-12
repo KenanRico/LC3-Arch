@@ -3,6 +3,7 @@
 #include "instructions.h"
 #include "platform.h"
 #include "modeconfig.h"
+#include "unittests.h"
 
 #include <iostream>
 
@@ -11,20 +12,7 @@
 
 int main(int argc, char** argv){
 #if MODE==TEST	
-	Platform* tplatform = new Platform();
-	Registers* tregs = new Registers();
-	Memory* tmem = new Memory();
-	Instructions* tinstructions = new Instructions();
-	tregs->TestAll();
-	tmem->TestAll();
-	tinstructions->TestNonTrap(tregs, tmem);
-	tplatform->DisableInputBuffering();
-	tinstructions->TestTraps(tregs, tmem);
-	tplatform->RestoreInputBuffering();
-	delete tregs; tregs=nullptr;
-	delete tmem; tmem=nullptr;
-	delete tinstructions; tinstructions=nullptr;
-	delete tplatform; tplatform = nullptr;
+	RunUnittests();
 #elif MODE==RUN
 	/*Configure platform*/
 	Platform platform;
@@ -41,7 +29,6 @@ int main(int argc, char** argv){
 		uint16_t instruction = mem.Read(regs.GetIncPC());
 		uint16_t opcode = 0;
 		uint16_t params = 0;
-		//std::cout<<std::hex<<"Instruction: "<<instruction<<"\n";
 		instructions.Parse(instruction, &opcode, &params);
 		instructions.Execute(opcode, params, &regs, &mem);
 	}

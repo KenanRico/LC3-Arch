@@ -218,7 +218,7 @@ int Instructions::LEA(uint16_t params, Registers* registers, Memory*){
 
 int Instructions::TRAP(uint16_t params, Registers* registers, Memory* memory){
 	uint16_t trap_code = params & mask[8];
-	int dr = trap_routines.ExecuteTrapRoutine(trap_code, registers, memory);
+	trap_routines.ExecuteTrapRoutine(trap_code, registers, memory);
 	if(trap_routines.Status()==0){
 		//OK
 	}else if(trap_routines.Status()==1){
