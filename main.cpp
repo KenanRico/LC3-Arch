@@ -33,7 +33,7 @@ int main(int argc, char** argv){
 	Memory mem;
 	Instructions instructions;
 	/*Load program*/
-	mem.LoadImage("./Test/2048.obj");
+	mem.LoadImage("./Executables/rogue.obj");
 	/*execution loop*/
 	regs[Registers::PC] = 0x3000;
 	platform.DisableInputBuffering();
