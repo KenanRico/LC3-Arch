@@ -36,7 +36,7 @@ int main(int argc, char** argv){
 	mem.LoadImage("./Test/rogue.obj");
 	/*execution loop*/
 	regs[Registers::PC] = 0x3000;
-	//platform.DisableInputBuffering();
+	platform.DisableInputBuffering();
 	while((mem.Status()|instructions.Status())==0x0){
 		uint16_t instruction = mem.Read(regs.GetIncPC());
 		uint16_t opcode = 0;
@@ -45,7 +45,7 @@ int main(int argc, char** argv){
 		instructions.Parse(instruction, &opcode, &params);
 		instructions.Execute(opcode, params, &regs, &mem);
 	}
-	//platform.RestoreInputBuffering();
+	platform.RestoreInputBuffering();
 	std::cout<<"mem status="<<mem.Status()<<"; inst status="<<instructions.Status()<<"\n";
 	/*Restore platform original config*/
 #endif

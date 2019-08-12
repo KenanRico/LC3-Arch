@@ -50,7 +50,6 @@ int TrapRoutines::ExecuteTrapRoutine(uint16_t trap_code, Registers* registers, M
 /*---------------------------------------------------Trap routine implementations----------------------------------------------------------*/
 
 
-/*
 int TrapRoutines::Trap_GETC(uint16_t* R0, Memory*){
 	char c = '\0';
 	std::cin>>c;
@@ -89,8 +88,6 @@ int TrapRoutines::Trap_PUTSP(uint16_t* R0, Memory* memory){
 	uint8_t* c = (uint8_t*)&mem[*R0];
 	std::string str = "";
 	while(*c!=0){
-		//str.push_back((uint8_t)(*c&0x00ff));
-		//str.push_back((uint8_t)(*c>>8));
 		str.push_back((char)*c);
 		++c;
 	}
@@ -102,9 +99,10 @@ int TrapRoutines::Trap_HALT(uint16_t*, Memory*){
 	status = HALT;
 	return -1;
 }
-*/
 
 
+
+/*
 int TrapRoutines::Trap_GETC(uint16_t* R0, Memory*){
 	*R0 = (uint16_t)getchar();
 	return 0;
@@ -153,3 +151,4 @@ int TrapRoutines::Trap_HALT(uint16_t*, Memory*){
 	status = HALT;
 	return -1;
 }
+*/
