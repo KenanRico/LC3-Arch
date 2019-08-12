@@ -117,9 +117,9 @@ int Instructions::ST(uint16_t params, Registers* registers, Memory* memory){
 int Instructions::JSR(uint16_t params, Registers* registers, Memory* memory){
 	Registers& reg = *registers;
 	Memory& mem = *memory;
+	reg[Registers::R7] = reg[Registers::PC];
 	if(params>>11 & mask[1]){
 		//JSR
-		reg[Registers::R7] = reg[Registers::PC] + 1;
 		uint16_t offset = sign_extend(params&mask[11], 11);
 		reg[Registers::PC] += offset;
 	}else{
@@ -132,7 +132,7 @@ int Instructions::JSR(uint16_t params, Registers* registers, Memory* memory){
 
 int Instructions::AND(uint16_t params, Registers* registers, Memory* memory){
 	Registers& reg = *registers;
-	uint16_t dr = params>>9;
+	uint16_t dr = params>>9 & mask[3];
 	uint16_t sr1 = params>>6 & mask[3];
 	if(params>>5 & mask[1]){
 		/*immediate mode*/

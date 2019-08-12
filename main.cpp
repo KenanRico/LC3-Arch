@@ -37,13 +37,11 @@ int main(int argc, char** argv){
 	/*execution loop*/
 	regs[Registers::PC] = 0x3000;
 	//platform.DisableInputBuffering();
-	//while((mem.Status()|instructions.Status())==0x0){
-	int i = 0;
-	while(i++ < 100){
+	while((mem.Status()|instructions.Status())==0x0){
 		uint16_t instruction = mem.Read(regs.GetIncPC());
 		uint16_t opcode = 0;
 		uint16_t params = 0;
-		std::cout<<std::hex<<"Instruction: "<<instruction<<"\n";
+		//std::cout<<std::hex<<"Instruction: "<<instruction<<"\n";
 		instructions.Parse(instruction, &opcode, &params);
 		instructions.Execute(opcode, params, &regs, &mem);
 	}

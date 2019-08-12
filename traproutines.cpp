@@ -119,7 +119,6 @@ int TrapRoutines::Trap_OUT(uint16_t* R0, Memory*){
 int TrapRoutines::Trap_PUTS(uint16_t* R0, Memory* memory){
 	Memory& mem = *memory;
 	uint16_t* c = &mem[*R0];
-	std::string str = "";
 	while(*c!=0){
 		putc((char)*c, stdout);
 		++c;
@@ -138,16 +137,15 @@ int TrapRoutines::Trap_IN(uint16_t* R0, Memory*){
 
 int TrapRoutines::Trap_PUTSP(uint16_t* R0, Memory* memory){
 	Memory& mem = *memory;
-	uint16_t* c = &mem[*R0];
+	uint8_t* c = (uint8_t*)&mem[*R0];
 	std::string str = "";
 	while(*c!=0){
 		//str.push_back((uint8_t)(*c&0x00ff));
 		//str.push_back((uint8_t)(*c>>8));
-		uint8_t c1 = *c & 0xff; putc((char)c1, stdout);
-		uint8_t c2 = *c >> 8; if(c2!=0) putc((char)c2, stdout);
+		str.push_back((char)*c);
 		++c;
 	}
-	fflush(stdout);
+	std::cout<<str;
 	return -1;
 }
 
