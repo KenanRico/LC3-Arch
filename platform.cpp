@@ -9,7 +9,7 @@ Platform::Platform(){
 	/*original tio*/
 	tcgetattr(STDIN_FILENO, &original_tio);
 	/*new tio*/
-	struct termios new_tio = original_tio;
+	new_tio = original_tio;
 	new_tio.c_lflag &= ~ICANON & ~ECHO;
 }
 
