@@ -116,7 +116,6 @@ int Instructions::ST(uint16_t params, Registers* registers, Memory* memory){
 
 int Instructions::JSR(uint16_t params, Registers* registers, Memory* memory){
 	Registers& reg = *registers;
-	Memory& mem = *memory;
 	reg[Registers::R7] = reg[Registers::PC];
 	if(params>>11 & mask[1]){
 		//JSR
@@ -206,6 +205,7 @@ int Instructions::JMP(uint16_t params, Registers* registers, Memory*){
 
 int Instructions::RES(uint16_t, Registers*, Memory*){
 	//Not used
+	return -1;
 }
 
 int Instructions::LEA(uint16_t params, Registers* registers, Memory*){

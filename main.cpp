@@ -12,7 +12,7 @@
 
 int main(int argc, char** argv){
 #if MODE==TEST	
-	RunUnittests();
+	//RunUnittests();
 #elif MODE==RUN
 	/*Configure platform*/
 	Platform platform;
