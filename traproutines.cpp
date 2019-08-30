@@ -49,43 +49,40 @@ void TrapRoutines::ExecuteTrapRoutine(uint16_t trap_code, Registers* registers, 
 
 
 void TrapRoutines::Trap_GETC(uint16_t* R0, Memory*){
-	char c = '\0';
-	std::cin>>c;
-	*R0 = (uint16_t)c;
+	*R0 = (uint16_t)getchar();
 }
 
 void TrapRoutines::Trap_OUT(uint16_t* R0, Memory*){
-	std::cout<<(char)*R0;
+	putc((char)*R0, stdout);
+	fflush(stdout);
+
 }
 
 void TrapRoutines::Trap_PUTS(uint16_t* R0, Memory* memory){
 	Memory& mem = *memory;
 	uint16_t* c = &mem[*R0];
-	std::string str = "";
 	while(*c!=0){
-		str.push_back((char)*c);
+		putc((char)*c, stdout);
 		++c;
 	}
-	std::cout<<str;
+	fflush(stdout);
 }
 
 void TrapRoutines::Trap_IN(uint16_t* R0, Memory*){
 	std::cout<<"Enter a character: ";
-	char c = '\0';
-	std::cin>>c;
-	std::cout<<c;
+	char c = getchar();
+	putc(c, stdout);
 	*R0 = (uint16_t)c;
 }
 
 void TrapRoutines::Trap_PUTSP(uint16_t* R0, Memory* memory){
 	Memory& mem = *memory;
 	uint8_t* c = (uint8_t*)&mem[*R0];
-	std::string str = "";
 	while(*c!=0){
-		str.push_back((char)*c);
+		putc((char)*c, stdout);
 		++c;
 	}
-	std::cout<<str;
+	fflush(stdout);
 }
 
 void TrapRoutines::Trap_HALT(uint16_t*, Memory*){
