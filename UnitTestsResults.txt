@@ -14,7 +14,7 @@ Instruction Impl:
 	- JMP: OK
 	- RES: NOT USED
 	- LEA: OK
-	- TRAP:
+	- TRAP: OK
 Trap routine Impl:
 	- GETC: OK
 	- OUT: OK
@@ -22,5 +22,5 @@ Trap routine Impl:
 	- IN: OK
 	- PUTSP: OK
 Other functions:
-	- Memory::LoadImage():
-	- Memory::operator[]():
+	- Memory::LoadImage(): OK
+	- Memory::operator[](): OK
